@@ -3,7 +3,7 @@
 A folder structure and a small set of rules that keep an AI assistant useful instead of
 confidently wrong, when you run your work or life from plain Markdown files.
 
-Works with any tool that reads files: Claude Code, Codex, Cursor, Gemini CLI, or whatever comes
+Works with any tool that reads files: Claude Code, Codex, Cursor, OpenCode, or whatever comes
 next. The instructions live in [AGENTS.md](AGENTS.md), the shared format most agents read.
 
 ## The problem
@@ -53,9 +53,9 @@ Then fill in the Compass when you next plan a week, and run the weekly review wh
 ### Tool notes
 
 - **Claude Code** reads [CLAUDE.md](CLAUDE.md), which imports AGENTS.md.
-- **Codex** and **Cursor** read AGENTS.md directly.
-- **Gemini CLI** reads GEMINI.md by default. Set `"contextFileName": "AGENTS.md"` in its
-  settings, or add a GEMINI.md containing the same one-line import.
+- **Codex**, **Cursor** and **OpenCode** read AGENTS.md directly.
+- **Any other tool** that looks for its own file name: add that file with the same one-line
+  import as CLAUDE.md, or point the tool's settings at AGENTS.md.
 
 ## Where this came from
 
