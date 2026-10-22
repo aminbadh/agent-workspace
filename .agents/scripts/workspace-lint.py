@@ -26,6 +26,8 @@ STALE_DAYS = 14            # default review interval; a file can declare its own
 DORMANT_DAYS = 90          # dormant files surface after this, to be archived or woken
 MAX_CONTEXT_LINES = 120    # CONVENTIONS.md aims for 100 and warns here
 VALID_STATUS = {"active", "dormant", "archived"}
+CODE = re.compile(r'```.*?```|`[^`]*`', re.S)
+AS_OF = re.compile(r"\(as of (\d{4}-\d{2}-\d{2})\)")
 
 # Trees whose files are not this workspace's own prose. Skills are released copies, rewritten
 # when they are updated; .claude/ only mirrors .agents/ by symlink, so skipping it avoids
@@ -139,6 +141,18 @@ for p in REVIEWED:
         if n > MAX_CONTEXT_LINES:
             warnings.append(f"{rel(p)}: {n} lines, over the {MAX_CONTEXT_LINES}-line limit. "
                             f"Move settled material to DECISIONS.md")
+    # A line that goes stale faster than its file carries its own "(as of YYYY-MM-DD)" stamp
+    # (CONVENTIONS.md, Dates). It is held to the file's interval; code spans are examples.
+    if status == "active":
+        for stamp in sorted(set(AS_OF.findall(CODE.sub("", text)))):
+            try:
+                stale = (TODAY - dt.date.fromisoformat(stamp)).days
+            except ValueError:
+                errors.append(f"{rel(p)}: (as of {stamp}) is not a real date")
+                continue
+            if stale > interval:
+                warnings.append(f"{rel(p)}: a fact stamped (as of {stamp}) is {stale} days old. "
+                                f"Re-check and restamp it, link to the live value, or move it to history")
 
 # --- 2. `parent` must name the folder the file actually sits in ---------------
 # Nothing else reads `parent`, so a file moved between folders keeps a wrong one forever.
@@ -164,7 +178,6 @@ for p in CONTEXTS:
 
 # --- 4. broken links, and live links into the archive -------------------------
 LINK = re.compile(r'\[[^\]]*\]\(([^)#]+?)(?:#[^)]*)?\)')   # the file, without its #anchor
-CODE = re.compile(r'```.*?```|`[^`]*`', re.S)
 for p in FILES:
     if archived(p):
         continue

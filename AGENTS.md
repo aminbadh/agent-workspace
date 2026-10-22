@@ -9,7 +9,7 @@ A folder of plain Markdown files holding the context, reasoning and decisions be
 ## First, every session
 
 1. **Read [PROFILE.md](PROFILE.md).** It says who the user is and what they are working on. Never ask for something it already answers.
-2. **If PROFILE.md still says "Blank template", run the onboard skill before anything else,** whatever the user asked. Tell them it takes about fifteen minutes and makes every later answer specific to them.
+2. **If PROFILE.md still says "Blank template", run the onboard skill before anything else,** whatever the user asked; if it says "Onboarding in progress", resume it. Tell them it takes about fifteen minutes and makes every later answer specific to them.
 
 ## Operating rules
 
@@ -46,10 +46,19 @@ Procedures the user asks for by name live as skills in `.agents/skills/`, linked
 | [onboard](.agents/skills/onboard/SKILL.md) | PROFILE.md is blank, the user wants to update their setup, or they want an add-on from [addons/](.agents/addons/README.md) |
 | [weekly-review](.agents/skills/weekly-review/SKILL.md) | It is review time, or the user asks to plan the week |
 | [one-thing](.agents/skills/one-thing/SKILL.md) | The user asks what to do now with no topic in play |
+| [upgrade](.agents/skills/upgrade/SKILL.md) | The user asks to upgrade the workspace, or the weekly review reports template changes |
 
 ## Working with me
 
 *Not set up yet: the onboard skill writes how the user wants the AI to work and write for them.*
+
+### What the agent may do
+
+A safe default, until onboarding asks the user what to change.
+
+- **Alone:** read anything connected; create and edit files in this workspace; run its scripts and read-only commands; draft anything.
+- **Draft only, the user sends:** emails, messages, posts and comments; commits and pushes; anything written to a task app or calendar, until the user says otherwise.
+- **Never:** spend money or start paid jobs, enter or store credentials, delete anything outside this workspace.
 
 ## Output
 

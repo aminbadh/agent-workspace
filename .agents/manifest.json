@@ -1,0 +1,35 @@
+{
+  "files": {
+    ".agents/CONVENTIONS.md": "14646b25212b1729867b35d3838021f68b9d3c8e41496bbc1657f429a60df908",
+    ".agents/addons/README.md": "09757e77beef3fae297cdef14affaa0ef0a96b0e19b7fa04fe21627c378a33d5",
+    ".agents/addons/applications/skills/cv-engine/SKILL.md": "ef207621ac44dfea35fb3250d2b2bbac437ce927c7d8e5805bfa96ed43fc42e6",
+    ".agents/addons/applications/skills/cv-engine/assets/example.en.yaml": "ab4a04fa11f6fc3b99aea50c79d6a2fd304a8c646b55fe6e40957e99d15f601f",
+    ".agents/addons/applications/skills/cv-engine/assets/template.typ": "fc5c42fb7798f172968d2b4d37238c6269e6c7165157ec7f2c78c08e899df921",
+    ".agents/addons/applications/skills/cv-engine/reference/content-format.md": "902016b361b3bfce37df09941c1a315bc467c7dce779fa47af3c2648f2afc95e",
+    ".agents/addons/applications/skills/cv-engine/reference/typst-cheatsheet.md": "4ab3bcc988342184404ee824265d312e5d1e9d660ddeb90177a448d0e320bf61",
+    ".agents/addons/applications/skills/cv-engine/reference/writing.md": "cffb2e737e6f88a0b3b6c9aa715db2e7c6feaf0e084c92fd928d0cb9754a6820",
+    ".agents/addons/applications/skills/cv-engine/scripts/cv.py": "e5fe6288f6d59859d99d25498ed84ace5da6070ebf2a4d6a4d1a8cfad7ecb2bf",
+    ".agents/addons/applications/skills/opportunity-research/SKILL.md": "bc7b3a39b4afafded254c71c7d6b2676abda81f20fc99cd970c5323033ad9a2c",
+    ".agents/addons/applications/skills/opportunity-research/assets/sources.example.json": "78350d96586c37ddf7d87414ddfc41bdca748953888af3ce627245c781e6dc97",
+    ".agents/addons/applications/skills/opportunity-research/reference/guide.md": "5d42a6b4c882432f193fd8a3996f3ce20e8fb9ec3f65c4d4958f115028c1b742",
+    ".agents/addons/applications/skills/opportunity-research/reference/tracker.md": "48698d06b02f7739443c77ade2bd4b2a1c08bba5e341a46f47e2693f32729b92",
+    ".agents/addons/applications/skills/opportunity-research/scripts/opps.py": "0f4aca0e219297100a96459f621720dca6ef3443ff6d0dd8f0eb5039773d3b57",
+    ".agents/addons/building/BUILDING.md": "8c19e21df6308fceb7451ee4b3f51ba03b61e6642b20bfc85b54e3baa5f937f4",
+    ".agents/scripts/workspace-lint.py": "7adcf6f71d1ab4f7d961cb9ec02b5bd90284b4cd6856f7b4c400d3ccea83a1d2",
+    ".agents/skills/onboard/SKILL.md": "c86911a6ddfbc2047a18535c0ef708786a8fb29d88b5037704d574404585c794",
+    ".agents/skills/onboard/assets/CONTEXT.md": "0ac6c6fe5eaf72c4b967e68b4b5896944c14c006272cdb65453fa606aeed3cb7",
+    ".agents/skills/onboard/assets/DECISIONS.md": "fbad85e2447634a1e525b727d123289b6d4a8fd56e1a9560558dda046b5908df",
+    ".agents/skills/onboard/assets/TASKS.md": "288415e30c6b15aa08faa894f2cfed69b85e1e14b53e031b49bd17174a2416c6",
+    ".agents/skills/onboard/reference/writing-tells.md": "db76ff6b991e99c6431840da9d3038986678dede09611c1d4606d07d6e923544",
+    ".agents/skills/one-thing/SKILL.md": "b9029146c41ccf1beaee8eae8892be1e56cab4d0a7fe682e375af60b7b71dc4f",
+    ".agents/skills/upgrade/SKILL.md": "ed34b7c579e08e9c1a88edec9be56866db0d7188d963bb94cce6d3bac369b6db",
+    ".agents/skills/upgrade/scripts/upgrade.py": "46e94101e564f361d0b1fba0432a95b355b6a7fff02e84491b53fd52a8ba8efa",
+    ".agents/skills/weekly-review/SKILL.md": "ffc5b1b6e263ec76262c26a17845624c4ae0b24eea0d746fd8cbe5edcf066124",
+    ".agents/skills/weekly-review/assets/COMPASS.md": "5a9bdb7ed5cc12a2a554354ee4ed84a682a0d8383ffc9261c1d8868aae46513c",
+    ".agents/skills/weekly-review/reference/rhythms.md": "d5a0f5a1789c882fc6e363f34d93e6413be031038b6d6ed29848c241149130b7"
+  },
+  "installs": {
+    ".agents/addons/applications/skills/": ".agents/skills/",
+    ".agents/addons/building/BUILDING.md": ".agents/BUILDING.md"
+  }
+}

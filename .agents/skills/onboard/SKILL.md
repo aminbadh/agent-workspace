@@ -1,18 +1,18 @@
 ---
 name: onboard
-description: "Set up this workspace for its user by interviewing them: what they are here for, who they are, what they are working on and how the AI should work with them; then create their first domains, connect where their notes and tasks already live, choose a weekly rhythm, move in the add-ons that fit, and finish with one real task. Use when PROFILE.md is still the blank template, when the user wants to update their setup because something changed, or when they want to add an add-on."
+description: "Set up this workspace for its user by interviewing them: what they are here for, who they are, what they are working on and how the AI should work with them; then create their first domains, connect where their notes and tasks already live, choose a weekly rhythm, move in the add-ons that fit, and finish with one real task. Use when PROFILE.md is still the blank template or says onboarding is in progress, when the user wants to update their setup because something changed, or when they want to add an add-on."
 ---
 
 # Onboarding
 
 The first session decides whether the workspace makes sense to the user. They came for an outcome, not for a system, and they may never have used an AI this way. So: short, warm, plain words, and something real at the end.
 
-**Three modes.** If [PROFILE.md](../../../PROFILE.md) still says "Blank template", run the full onboarding below. Otherwise run [update mode](#update-mode). If the user only wants an add-on, go straight to [moving an add-on in](#moving-an-add-on-in).
+**Three modes.** If [PROFILE.md](../../../PROFILE.md) still says "Blank template", run the full onboarding below. If it says "Onboarding in progress", **resume**: read what is already saved, say in two lines what is done, and carry on from the first unfinished step without asking anything twice. Otherwise run [update mode](#update-mode). If the user only wants an add-on, go straight to [moving an add-on in](#moving-an-add-on-in).
 
 ## Ground rules
 
 - **A conversation, not a form.** Two or three questions per message. Follow up on vague answers ("data stuff": "analysing data, building dashboards, or something else?"). If they want to skip something, skip it and note it as unknown.
-- **Save after every answer, not at the end.** A session can end at any moment, and the user should never have to answer twice. Write what each message told you into the right file before asking the next questions.
+- **Save after every answer, not at the end.** A session can end at any moment, and the user should never have to answer twice. Write what each message told you into the right file before asking the next questions, and keep PROFILE.md's progress line current (`*Onboarding in progress: steps 1 to 3 done.*`), so an interrupted setup can resume.
 - **Never invent.** Write their words, not a plausible version of them. Mark anything they were unsure of "(to confirm)".
 - **Search for the outside world** ([AGENTS.md](../../../AGENTS.md), rule 7): whether their task app has an MCP server, how to export from their notes app. Lead with the established route.
 - **Get today's date from the machine** (`date +%Y-%m-%d`), never from memory.
@@ -35,12 +35,17 @@ Ask one open question: what do they want this workspace to help with? The answer
 
 ## 2. Who they are
 
-Ask who they are (name, what they do, where they are based, languages), what they are working on (the two to five big things), and **how they want the AI to work and write for them**: the language for replies, the tone (brief or detailed, formal or casual), and anything they want or never want in its writing (jargon, emoji, long lists, a phrase that annoys them).
+Ask who they are (name, what they do, where they are based, languages), what they are working on (the two to five big things), and **how they want the AI to work and write for them**:
+
+- **Replies:** the language, the tone (brief or detailed, formal or casual).
+- **Writing:** offer [the list of AI writing tells](reference/writing-tells.md) and ask which to avoid, in replies and in anything written for others. Add anything else they want or never want (jargon, emoji, a phrase that annoys them).
+- **What the agent may do on its own:** show the default ladder in AGENTS.md's "What the agent may do" (alone, draft only, never) and ask what to move. Connected email, task or calendar tools make this matter: say so.
 
 Write it down:
 
-- **PROFILE.md:** fill the fields from their answers. Add frontmatter at the top (`domain: Profile`, `parent: root`, `status: active`, `review_interval: 60`, `last_reviewed:` today) and remove the "Blank template" line, which is how AGENTS.md knows onboarding has run.
-- **AGENTS.md, "Working with me":** replace the "Not set up yet" line with their preferences, as short bold-led bullets in the second person ("**Replies in French.** Code and file names stay in English."). Their writing rules go here and nowhere else.
+- **PROFILE.md:** fill the fields from their answers. Add frontmatter at the top (`domain: Profile`, `parent: root`, `status: active`, `review_interval: 60`, `last_reviewed:` today) and replace the "Blank template" line with the progress line, which is how AGENTS.md knows onboarding has started and not finished.
+- **AGENTS.md, "Working with me":** replace the "Not set up yet" line with their preferences, as short bold-led bullets in the second person ("**Replies in French.** Code and file names stay in English."). Their writing rules go here and nowhere else, and their ladder replaces the default in "What the agent may do".
+- **Read it back.** Show them PROFILE.md and the two AGENTS.md sections as written, and ask them to approve or correct them before going on. Nothing else happens until they have seen what was written about them.
 
 ## 3. Their first domains
 
@@ -57,13 +62,14 @@ Ask where their notes, documents and plans live today: a notes app, a folder of 
 
 - **What you can reach** (a folder on this computer, an app with a connected tool): read it, fill the domains from it, and link the source from each domain's Key Resources rather than copying everything in. Copy only what the domain needs to say what is true now.
 - **What you cannot reach yet:** search for the way in (an MCP server or connector for the app, an export format, a sync to a folder) and offer it, with the steps. If they set it up now, read it and fill the domains; if not, note in PROFILE.md where it lives and that it is not connected.
+- **An organised folder or vault they want to keep using** (Obsidian, PARA folders, a numbered system): map it with them **folder by folder**. For each, ask whether it becomes a domain, part of one, a source to link, or stays as it is. Never infer the mapping from folder names, and move nothing without a yes. A folder that becomes a domain gets a `CONTEXT.md` from the template, written from what is in it.
 - Record in PROFILE.md's Setup where their notes live.
 
 ## 5. Tools and the task home
 
 - **Which AI tool** they use, written in PROFILE.md.
 - **Whether you have a browser.** Check, do not assume: web search is not a browser. If a browser tool is listed, open one page with it. Write down what you actually have, so later work knows its limits.
-- **Git.** If `git remote -v` shows the upstream named on README.md's `Upstream:` line (the template this workspace was made from), say so: a weekly pull would pull the template's changes into their workspace. Offer to remove that remote (`git remote remove origin`), or to point it at a private repository of their own. If the folder is not a git repository, offer `git init`, so every version of every file is kept; their choice.
+- **Git.** If `git remote -v` shows the upstream named on README.md's `Upstream:` line (the template this workspace was made from), say so: a weekly pull would pull the template's changes into their workspace. Offer to remove that remote (`git remote remove origin`), or to point it at a private repository of their own. They lose nothing: template fixes arrive through the upgrade skill, which reads the `Upstream:` line, not the remote. If the folder is not a git repository, offer `git init`, so every version of every file is kept; their choice.
 - **Where tasks live.** Ask what they use for tasks and dates: an app (Todoist, Things, TickTick, Notion, Linear, a calendar), a file, paper, nothing.
   - **An app:** search whether it has an MCP server, a connector for their AI tool, or a command-line tool. If one exists and is connected, test it by listing a few of their tasks. If it exists but is not connected, give them the setup steps and offer to wait. Once it works, write AGENTS.md's "Tasks" section: the app, how the agent reaches it, the projects or lists that matter, how "done" and "this week" are marked. If no route exists, say so and suggest a TASKS.md instead.
   - **Anything else:** copy [the TASKS.md template](assets/TASKS.md) to the workspace root. If they already keep tasks in a file or a notebook, move the open ones into it (verb first, dates kept) with their agreement, so there is one list, not two. Then write AGENTS.md's "Tasks" section: `Tasks live in [TASKS.md](TASKS.md).`, with one line on how it is used.
@@ -117,7 +123,7 @@ Finish with a task that matches what they came for, using what they just told yo
 
 ## 9. Close
 
-Run `uv run .agents/scripts/workspace-lint.py` and fix anything it reports. Then end with a few lines:
+Remove PROFILE.md's progress line: onboarding is done. Run `uv run .agents/scripts/workspace-lint.py` and fix anything it reports. Then end with a few lines:
 
 - what was created and where (their domains, the task home, the rhythm, any add-on);
 - two or three things they can say next time ("what should I do now?", "it's review time", something from their add-on);
@@ -127,7 +133,7 @@ Do not commit: they review and commit ([AGENTS.md](../../../AGENTS.md#output)).
 
 ## Update mode
 
-When PROFILE.md is already filled in, do not re-run the interview. Ask what changed (a new goal, a finished project, a move, a new tool), and update only what it touches: PROFILE.md, the domains (a new one, one gone dormant, one to archive), AGENTS.md's "Tasks" or "Working with me", experience.md and the CV if their facts changed. Bump `last_reviewed` on what you verified.
+When PROFILE.md is already filled in, do not re-run the interview. Ask what changed (a new goal, a finished project, a move, a new tool), and update only what it touches: PROFILE.md, the domains (a new one, one gone dormant, one to archive), AGENTS.md's "Tasks", "Working with me" or "What the agent may do", experience.md and the CV if their facts changed. Bump `last_reviewed` on what you verified.
 
 - **The rhythm, after a few weeks:** if the weekly review reports that the rhythm is not working, ask what got in the way, suggest another from the reference, and replace PROFILE.md's "Weekly rhythm" section with it. Installing or removing the Compass follows step 6.
 - **A new add-on:** offer it if what changed points to one, and move it in as below.

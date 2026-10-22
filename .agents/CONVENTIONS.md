@@ -89,6 +89,8 @@ Open items go at the top under `## Open`, above everything closed, so all decisi
 
 Date closed decisions. Learnings rarely need a date. **Never delete an entry.** When a decision is replaced, add the new one and mark the old with `**Superseded 2026-11-02 by:** ...`. That is what stops the same ground being argued twice, and it is why `CONTEXT.md` can stay short.
 
+**A big decision can carry a prediction**, so it can be learned from rather than only remembered. Add two short lines under the entry: `Expect:` what should be true if it was right, and by when; `Would change my mind:` what evidence would reopen it. The revisit is a task in the task home, dated when the prediction should be checkable. When it comes due, append the outcome to the same entry (`**Revisited 2027-03-01:** right, wrong, partly, or too early`, with a line on why) and log any learning. A revisit the user scheduled when deciding is not reopening a closed decision. Small decisions need none of this.
+
 ## Folder vocabulary
 
 ```
@@ -155,6 +157,8 @@ Rules for writing tasks:
 **Dates you act on live in the task home**: due dates, deadlines, launch dates, application windows. A task app surfaces an overdue item by itself, and a second copy here goes stale the first time the plan moves. So a `CONTEXT.md` has no dates section, there is no date field in frontmatter, and a Next Up item links to its project in the task home instead of restating when.
 
 A date belongs in these files in two cases only: **as history** inside a `DECISIONS.md` entry, where it records when something was settled and cannot go stale, and **as a stable fact** that is not a commitment, such as a graduation year or a contract's term. `last_reviewed` is metadata about the file, not a plan, and stays.
+
+**A fact that will change carries its own date.** `last_reviewed` dates a whole file; some single lines go stale faster than their file: a balance, a count, a price, someone's current role. Write those as `(as of 2026-10-22)` right after the fact. When the stamp is older than its file's review interval, the linter flags it, and the fix is one of three: re-check it and restamp, replace it with a link to where the live value is, or move it into a dated note as history. A fact that a command or an app can show is not written down at all (AGENTS.md, rule 3); a stamp is for state only a person can supply.
 
 ## Skills
 

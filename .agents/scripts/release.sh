@@ -3,7 +3,8 @@
 # developed and used: the core skills, the applications add-on's skills, the linter, the spec,
 # BUILDING.md and the add-ons index. That workspace is their home; these are released copies,
 # word for word apart from review dates, so the starter works on its own. Never edit them here.
-# Run it, review the diff, commit.
+# It then writes .agents/manifest.json, from which the upgrade skill takes a later release into a
+# user's workspace without overwriting their edits. Run it, review the diff, commit.
 #
 #   ./.agents/scripts/release.sh                    from ~/.links/workspace
 #   WORKSPACE=<dir> ./.agents/scripts/release.sh
@@ -21,7 +22,8 @@ release_skill() {
   cp -R "$SRC/.agents/skills/$1" "$2/"
   find "$2/$1" \( -name __pycache__ -o -name .DS_Store \) -prune -exec rm -rf {} +
 }
-for s in onboard weekly-review one-thing; do release_skill "$s" .agents/skills; done
+CORE="onboard weekly-review one-thing upgrade"
+for s in $CORE; do release_skill "$s" .agents/skills; done
 for s in cv-engine opportunity-research; do release_skill "$s" .agents/addons/applications/skills; done
 
 # A single file: its workspace path, then its path here.
@@ -49,4 +51,26 @@ for f in .agents/skills/*/SKILL.md .agents/addons/applications/skills/*/SKILL.md
     { print }
   ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
 done
+
+# The manifest the upgrade skill reads: every file released above with the sha256 of its bytes,
+# sorted, then where an add-on's files land once moved in. Released files only, never the
+# manifest itself or a starter-owned file, so an unchanged release writes an identical manifest.
+{
+  find $(printf '.agents/skills/%s ' $CORE) .agents/addons/applications/skills -type f
+  printf '%s\n' .agents/scripts/workspace-lint.py .agents/CONVENTIONS.md \
+    .agents/addons/building/BUILDING.md .agents/addons/README.md
+} | LC_ALL=C sort | tr '\n' '\0' | xargs -0 shasum -a 256 | awk '
+  BEGIN { print "{"; print "  \"files\": {" }
+  NR > 1 { print line "," }
+  { line = "    \"" substr($0, 67) "\": \"" $1 "\"" }
+  END {
+    print line
+    print "  },"
+    print "  \"installs\": {"
+    print "    \".agents/addons/applications/skills/\": \".agents/skills/\","
+    print "    \".agents/addons/building/BUILDING.md\": \".agents/BUILDING.md\""
+    print "  }"
+    print "}"
+  }
+' > .agents/manifest.json
 git status --short
