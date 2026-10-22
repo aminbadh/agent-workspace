@@ -38,3 +38,4 @@ The areas are the user's own choice, picked at onboarding from the Wheel of Life
 - **Rungs link, they do not restate.** A rung that names a deadline points to the domain or the task home where the date lives.
 - **Rungs are goals, not notes.** Reasoning belongs in the domain's DECISIONS.md.
 - **A rung marked *(proposed)*** was suggested by an agent and is the user's to confirm.
+- **When a session closes something a rung names,** update the rung and bump `last_reviewed` in the same session.

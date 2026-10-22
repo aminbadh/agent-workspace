@@ -54,9 +54,9 @@ The workspace its maintainer has run their own work and studies from since March
 
 ## For the maintainer
 
-The applications add-on's skills are developed in the maintainer's own workspace; this repository carries released copies. To refresh them, run the sync script, review the diff and commit. Never edit them here.
+This repository is a release of the maintainer's own workspace. The generic files (the three core skills, the applications add-on's skills, the linter, CONVENTIONS.md, the building add-on's BUILDING.md and [addons/README.md](addons/README.md)) are edited only there and copied here word for word by the release script, minus review dates. Never edit them here. The starter owns only PROFILE.md and AGENTS.md (blank templates), this README, LICENSE, .gitignore, CLAUDE.md and the add-on READMEs other than the index. To release, run the script, review the diff and commit.
 
 ```bash
-./scripts/sync-skills.sh                          # from ~/.links/workspace/.agents/skills
-WORKSPACE_SKILLS=<dir> ./scripts/sync-skills.sh   # from anywhere else
+./scripts/release.sh                   # from ~/.links/workspace
+WORKSPACE=<dir> ./scripts/release.sh   # from anywhere else
 ```

@@ -5,7 +5,7 @@ description: "The weekly review: upkeep that keeps the workspace true (leftover 
 
 # The Weekly Review
 
-Two jobs, kept apart. **Upkeep** is the same for everyone and keeps the files true. **The rhythm** is the user's own way of planning and reflecting, chosen at onboarding and written into the section below. Upkeep runs first, because planning from stale files means planning against something that is no longer true.
+Two jobs, kept apart. **Upkeep** is the same for everyone and keeps the files true. **The rhythm** is the user's own way of planning and reflecting, chosen at onboarding and written in [PROFILE.md](../../../PROFILE.md#weekly-rhythm), so this skill stays the same in every workspace. Upkeep runs first, because planning from stale files means planning against something that is no longer true.
 
 **The linter is the agenda.** A domain being worked stays fresh, because work updates what it invalidates ([AGENTS.md](../../../AGENTS.md), rule 5). A quiet domain goes stale and the linter flags it. So the review never sweeps every domain: it works what is flagged, and nothing else.
 
@@ -38,11 +38,11 @@ If the task home is TASKS.md, clear the ticked tasks and empty last week's This 
 
 ### 5. The rhythm, after a few weeks
 
-If the rhythm below was chosen four or more weeks ago and has not been checked since, ask whether it is working: is the review getting done, and does the plan get followed? If not, the onboard skill's update mode swaps it. Note the answer under the rhythm's heading, with the date, either way.
+If the rhythm in PROFILE.md was chosen four or more weeks ago and has not been checked since, ask whether it is working: is the review getting done, and does the plan get followed? If not, the onboard skill's update mode swaps it. Note the answer under the rhythm, with the date, either way.
 
 ## The rhythm
 
-*Not chosen yet. The onboard skill writes the chosen rhythm's planning and reflection steps here, from [the rhythms reference](reference/rhythms.md), with the date it was chosen and where its plan lives.*
+Run the steps in [PROFILE.md](../../../PROFILE.md#weekly-rhythm)'s "Weekly rhythm" section. The onboard skill writes them there from [the rhythms reference](reference/rhythms.md), with the date the rhythm was chosen and where its plan lives. They may also name weekly steps of the user's own that belong to no skill; run those too.
 
 Until one is chosen: read each active domain's Next Up, ask the user which one to three to do this week, and put them in the task home.
 

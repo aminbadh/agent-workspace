@@ -7,7 +7,7 @@ description: "Pick the single thing to do right now, across all domains, from th
 
 Which thing to do right now is never stored, because it depends on what is blocked, what just opened and what is closing soon. So compute it:
 
-1. **Read the current plan, wherever the user's rhythm keeps it.** The rhythm is named in [the weekly-review skill](../weekly-review/SKILL.md#the-rhythm), and each rhythm's plan lives in:
+1. **Read the current plan, wherever the user's rhythm keeps it.** The rhythm is named in [PROFILE.md](../../../PROFILE.md#weekly-rhythm), and each rhythm's plan lives in:
 
    | Rhythm | Read |
    |---|---|

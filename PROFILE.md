@@ -31,3 +31,7 @@ The rules themselves live in [AGENTS.md](AGENTS.md#working-with-me), which every
 - **Where my notes already live:** (each domain links the notes it was filled from)
 
 Where tasks live is in [AGENTS.md](AGENTS.md#tasks).
+
+## Weekly rhythm
+
+*Not chosen yet. The onboard skill writes the chosen rhythm here from the weekly-review skill's rhythms reference: its name and the date it was chosen, its planning and reflection steps, and where its plan lives.*

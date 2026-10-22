@@ -75,7 +75,7 @@ The [weekly-review skill](../weekly-review/SKILL.md) does the same upkeep for ev
 
 1. Ask about their habits, using the questions at the top of [the rhythms reference](../weekly-review/reference/rhythms.md): do they plan now and how, which day suits a review and how long, numbers or not, one big goal or several areas.
 2. Suggest one or two methods from the reference that fit, with a line each on why. If they name a method that is not there, search for it and write its steps in the same shape. If they want none, leave it: the review falls back to each domain's Next Up.
-3. Write the chosen method into the weekly-review skill's "The rhythm" section, replacing the "Not chosen yet" text: its name and today's date as a line, its planning steps, its reflection steps, and where its plan lives. Keep it to what they will actually do.
+3. Write the chosen method into PROFILE.md's "Weekly rhythm" section, replacing the "Not chosen yet" text: its name and today's date as a line, its planning steps, its reflection steps, and where its plan lives. Keep it to what they will actually do.
 4. **The Compass** also installs [COMPASS.md](../weekly-review/assets/COMPASS.md) at the root: show the life areas from the reference, let them pick, rename and merge, write one section per area, and fill the ladders with them, marking anything you suggested *(proposed)*. Scores stay off for a first setup.
 
 ## 7. Add-ons
@@ -129,7 +129,7 @@ Do not commit: they review and commit ([AGENTS.md](../../../AGENTS.md#output)).
 
 When PROFILE.md is already filled in, do not re-run the interview. Ask what changed (a new goal, a finished project, a move, a new tool), and update only what it touches: PROFILE.md, the domains (a new one, one gone dormant, one to archive), AGENTS.md's "Tasks" or "Working with me", experience.md and the CV if their facts changed. Bump `last_reviewed` on what you verified.
 
-- **The rhythm, after a few weeks:** if the weekly review reports that the rhythm is not working, ask what got in the way, suggest another from the reference, and replace the rhythm section with it. Installing or removing the Compass follows step 6.
+- **The rhythm, after a few weeks:** if the weekly review reports that the rhythm is not working, ask what got in the way, suggest another from the reference, and replace PROFILE.md's "Weekly rhythm" section with it. Installing or removing the Compass follows step 6.
 - **A new add-on:** offer it if what changed points to one, and move it in as below.
 
 ## Moving an add-on in

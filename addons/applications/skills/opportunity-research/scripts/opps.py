@@ -315,10 +315,12 @@ DATE_RE = re.compile(
 
 
 def watch(argv: list[str]) -> int:
-    """Each source is {"label", "url", "kind": "links" or "dates", "match": optional}.
-    links: report links (filtered by `match`) that appeared or vanished, for career pages
-    and catalogues. dates: report dates that appeared or vanished, for a page whose
-    window has not been announced yet. State is kept beside the sources file."""
+    """Each source is {"label", "url", "kind": "links" or "dates", "match": optional,
+    "pages": optional}. links: report links (filtered by `match`) that appeared or vanished,
+    for career pages and catalogues; `pages` reads a paginated listing as url?page=0 to
+    pages-1 (set it one above the current count, so growth is not cut off). dates: report
+    dates that appeared or vanished, for a page whose window has not been announced yet.
+    State is kept beside the sources file."""
     src_path = pathlib.Path(argv[0])
     sources = json.loads(src_path.read_text())
     state_path = src_path.with_name(src_path.stem + ".state.json")
@@ -335,8 +337,14 @@ def watch(argv: list[str]) -> int:
             if s.get("kind", "links") == "dates":
                 now = sorted({m.group(0).lower() for m in DATE_RE.finditer(" ".join(page.text))})
             else:
-                now = sorted({f"{l or '(no text)'} | {urljoin(final, h)}" for h, l in page.links
-                              if s.get("match", "") in urljoin(final, h)})
+                pages = [(final, page)]
+                sep = "&" if "?" in s["url"] else "?"
+                for p in range(1, int(s.get("pages", 1))):
+                    _, f_p, pg_p, _ = fetch(c, f"{s['url']}{sep}page={p}")
+                    if pg_p:
+                        pages.append((f_p, pg_p))
+                now = sorted({f"{l or '(no text)'} | {urljoin(f, h)}" for f, pg in pages
+                              for h, l in pg.links if s.get("match", "") in urljoin(f, h)})
                 if not now:
                     print(f"EMPTY    {s['label']}: no matching links; the page may need a browser")
             before = state.get(key)
