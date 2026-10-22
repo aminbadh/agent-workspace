@@ -13,7 +13,7 @@ Two jobs, kept apart. **Upkeep** is the same for everyone and keeps the files tr
 
 ### 1. Leftover work
 
-- **If the workspace has a remote of the user's own** (`git remote -v`; the starter's own `workspace-starter` repository does not count), pull first with `git pull --ff-only`, to pick up work from another machine. With no remote, skip this. With no git at all, skip this whole step.
+- **If the workspace has a remote of the user's own** (`git remote -v`; the upstream named on README.md's `Upstream:` line, the template this workspace was made from, does not count), pull first with `git pull --ff-only`, to pick up work from another machine. With no remote, skip this. With no git at all, skip this whole step.
 - **A dirty tree is normal, not a blocker.** Work is committed by the user when it is done, never by the review.
 - **Flag only stale dirty files:** uncommitted and untouched for a week or more. That is abandoned work rather than live work; ask whether to finish, commit or drop it.
 
