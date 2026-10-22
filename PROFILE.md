@@ -34,4 +34,4 @@ Where tasks live is in [AGENTS.md](AGENTS.md#tasks).
 
 ## Weekly rhythm
 
-*Not chosen yet. The onboard skill writes the chosen rhythm here from the weekly-review skill's rhythms reference: its name and the date it was chosen, its planning and reflection steps, and where its plan lives.*
+*Not chosen yet. The onboard skill writes the chosen rhythm here: its name, linked to its entry in the weekly-review skill's rhythms reference, the date it was chosen, and only what is the user's own (their day, steps they skip or add, weekly steps of their own). The steps themselves stay in the reference.*

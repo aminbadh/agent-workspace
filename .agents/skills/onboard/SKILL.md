@@ -74,8 +74,8 @@ Ask where their notes, documents and plans live today: a notes app, a folder of 
 The [weekly-review skill](../weekly-review/SKILL.md) does the same upkeep for everyone; the planning and reflection part is theirs to choose.
 
 1. Ask about their habits, using the questions at the top of [the rhythms reference](../weekly-review/reference/rhythms.md): do they plan now and how, which day suits a review and how long, numbers or not, one big goal or several areas.
-2. Suggest one or two methods from the reference that fit, with a line each on why. If they name a method that is not there, search for it and write its steps in the same shape. If they want none, leave it: the review falls back to each domain's Next Up.
-3. Write the chosen method into PROFILE.md's "Weekly rhythm" section, replacing the "Not chosen yet" text: its name and today's date as a line, its planning steps, its reflection steps, and where its plan lives. Keep it to what they will actually do.
+2. Suggest one or two methods from the reference that fit, with a line each on why. If they name a method that is not there, search for it and add its entry to the reference in the same shape. If they want none, leave it: the review falls back to each domain's Next Up.
+3. Write the choice into PROFILE.md's "Weekly rhythm" section, replacing the "Not chosen yet" text: the method's name, linked to its entry in the reference, and today's date. Then add only what is theirs: the day and length of the review, any step they skip or add, weekly steps of their own that belong to no skill. **Never copy the reference's steps into PROFILE.md:** the reference is their one home, and a copy would drift from it.
 4. **The Compass** also installs [COMPASS.md](../weekly-review/assets/COMPASS.md) at the root: show the life areas from the reference, let them pick, rename and merge, write one section per area, and fill the ladders with them, marking anything you suggested *(proposed)*. Scores stay off for a first setup.
 
 ## 7. Add-ons

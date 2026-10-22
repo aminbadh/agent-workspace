@@ -7,17 +7,7 @@ description: "Pick the single thing to do right now, across all domains, from th
 
 Which thing to do right now is never stored, because it depends on what is blocked, what just opened and what is closing soon. So compute it:
 
-1. **Read the current plan, wherever the user's rhythm keeps it.** The rhythm is named in [PROFILE.md](../../../PROFILE.md#weekly-rhythm), and each rhythm's plan lives in:
-
-   | Rhythm | Read |
-   |---|---|
-   | The Compass | The Monthly rungs in COMPASS.md, then this week's tasks in the task home |
-   | Agile Results | The week's three wins in the task home |
-   | 12 Week Year | The week's planned tactics in the task home |
-   | GTD | The next actions in the task home that can be done here and now |
-   | Multi-scale planning | Today's time blocks (ask, if they are in a calendar or notebook), then the week's plan |
-   | Bullet Journal | This week's migrated tasks in the task home |
-   | None chosen yet | Each active domain's Next Up |
+1. **Read the current plan, wherever the user's rhythm keeps it.** The rhythm is named in [PROFILE.md](../../../PROFILE.md#weekly-rhythm), and where its plan lives is the "Plan lives in" line of its entry in [the rhythms reference](../weekly-review/reference/rhythms.md). With no rhythm chosen, read each active domain's Next Up.
 
    Turn each candidate into the next concrete action that moves it.
 2. **Check each candidate's domain** for what actually moved. The plan gives rank; the domain gives what is true.

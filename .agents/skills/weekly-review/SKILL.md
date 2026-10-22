@@ -42,7 +42,7 @@ If the rhythm in PROFILE.md was chosen four or more weeks ago and has not been c
 
 ## The rhythm
 
-Run the steps in [PROFILE.md](../../../PROFILE.md#weekly-rhythm)'s "Weekly rhythm" section. The onboard skill writes them there from [the rhythms reference](reference/rhythms.md), with the date the rhythm was chosen and where its plan lives. They may also name weekly steps of the user's own that belong to no skill; run those too.
+Read the rhythm named in [PROFILE.md](../../../PROFILE.md#weekly-rhythm)'s "Weekly rhythm" section, and run its planning and reflection steps from its entry in [the rhythms reference](reference/rhythms.md). What PROFILE.md adds is the user's own: their day, steps they skip or add, and weekly steps of theirs that belong to no skill. Where the two differ, PROFILE.md wins.
 
 Until one is chosen: read each active domain's Next Up, ask the user which one to three to do this week, and put them in the task home.
 
