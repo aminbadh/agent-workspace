@@ -1,4 +1,8 @@
-# Workspace Starter
+# Agent Workspace
+
+Upstream: https://github.com/aminbadh/agent-workspace
+
+*The weekly review and onboarding read the line above to tell this template's repository from your own remote. If you keep this README, keep that line.*
 
 **Tell your AI once.** A folder of plain Markdown files your AI assistant works in, so it knows who you are, what you are working on and what you already decided, and stops asking you to explain yourself every session. It stays useful instead of confidently wrong, because every file says how old it is and every fact lives in one place.
 
