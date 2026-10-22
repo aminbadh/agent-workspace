@@ -7,7 +7,7 @@ A domain keeps only what is specific to it (its server, its reviewer, its demo p
 ## Roles
 
 - **Overseer.** A session started in this workspace. Thought partner and planner: it talks strategy with the user, owns the domain's plan, specs, `CONTEXT.md` and `DECISIONS.md`, writes each brief, and reviews what comes back. It reads code repos and never writes to them. It is **restartable**: everything it needs is in files, so a fresh overseer picks up from the domain's `CONTEXT.md`, its plan and the open briefs.
-- **Builder.** A background session started *inside the code repo*, so that repo's own instructions and settings load. One brief, its own worktree and local branch. It writes code, runs the checks, commits locally and stops. It never pushes, deploys, touches a server or edits the workspace.
+- **Builder.** A separate session started *inside the code repo* (in the background where the tool allows), so that repo's own instructions and settings load. One brief, its own branch (and worktree, where the tool makes one). It writes code, runs the checks, commits locally and stops. It never pushes, deploys, touches a server or edits the workspace.
 - **Helpers.** Read-only subagents the overseer spawns for audits, research and review. They can run in parallel because they write nothing. They return a summary, not file dumps.
 - **The user.** Decisions, pushes, deploys, anything that needs a login, an emailed code or root on a server. Each push or deploy is a separate go-ahead.
 
@@ -16,11 +16,13 @@ A domain keeps only what is specific to it (its server, its reviewer, its demo p
 1. **Orient.** Read the domain's `CONTEXT.md`, its plan and any open briefs. If the repo has moved since the docs were last reviewed, a read-only helper audits it first, so the brief's "Where it stands" is a fact and not a memory.
 2. **Decide before briefing.** A brief that needs a decision nobody has made goes back to the user as a question. A builder that has to choose will choose, and that is how agents invent decisions.
 3. **Brief.** Write `<domain>/_working/briefs/YYYY-MM-DD-<step>.md` from the template below. A builder sees no chat: anything it needs is in the brief or linked from it.
-4. **Launch** the builder in the repo, pointed at the brief. With Claude Code, from the overseer's shell:
-   ```bash
-   cd ~/.links/projects/<repo> && claude --bg --name <step> "Execute the brief at ~/.links/workspace/<domain>/_working/briefs/<file>.md"
-   ```
-   Not a subagent: a subagent starts in the overseer's directory and does not load the repo's instructions. Other tools have their own background or cloud sessions; what matters is that the builder starts inside the repo. Check a builder's real state (for Claude Code, `claude agents --json`) rather than trusting a "working" label.
+4. **Launch** the builder. In any tool, a builder is a separate session started **inside the code repo**, so the repo's own instructions load, given one line: `Execute the brief at ~/.links/workspace/<domain>/_working/briefs/<file>.md`. One brief per builder, each on its own branch (a worktree where the tool makes one). Start it in a new terminal or the tool's own background or cloud sessions, then come back to the overseer to review it. Not a subagent of the overseer: a subagent starts in the overseer's directory and does not load the repo's instructions.
+   - **Claude Code**, from the overseer's shell, runs it in the background in its own worktree:
+     ```bash
+     cd ~/.links/projects/<repo> && claude --bg --name <step> "Execute the brief at ~/.links/workspace/<domain>/_working/briefs/<file>.md"
+     ```
+     Check a builder's real state with `claude agents --json` rather than trusting a "working" label.
+   - **Codex, OpenCode and other tools:** open a new session in the repo (`cd ~/.links/projects/<repo>`, then start the tool there), make the brief's branch first if the tool does not (`git switch -c <step>`), and paste the one line above. The builder's final message is its report.
 5. **Verify, in layers.** The builder shows command output for every check. A fresh reviewer then reads the branch diff against the brief and reports correctness and requirement gaps only, not style. Then the overseer checks the acceptance list itself and runs the app for anything a person sees.
 6. **Correct once.** Fixes go in a *Round 2* section appended to the same brief. If a second round is needed, write a fresh brief for a fresh builder instead of a third correction in the same session.
 7. **Close.** Merge locally (`git merge --ff-only`). Update the plan, `CONTEXT.md` and `DECISIONS.md` in the same session, from the report's "Workspace facts this changes". Hand the user the push and the deploy as exact commands. Then end the builder's session and free its worktree.
@@ -42,8 +44,8 @@ Once per code repo, so no brief has to remember it:
 
 1. Its instructions file (`CLAUDE.md`, `AGENTS.md`) says **"Never push. The user pushes."** A background session in its own worktree may otherwise commit and push its branch on its own.
 2. Its instructions file points at the workspace domain folder for context ([how another repo points at this one](#how-another-repo-points-at-this-one)).
-3. The gitignored files a builder needs in its worktree (`.env`, local instructions) are listed for copying: for Claude Code, in a `.worktreeinclude`. A fresh worktree has none of them.
-4. The repo is trusted once in an interactive session there, or a background session may refuse to start.
+3. If builders run in worktrees, the gitignored files they need (`.env`, local instructions) are listed for copying, since a fresh worktree has none of them: for Claude Code, in a `.worktreeinclude`. A builder working in the repo's own folder needs nothing here.
+4. The repo is trusted once in an interactive session there, since most tools ask before working in a new folder and a background session may refuse to start instead of asking.
 5. Reading `~/.links/workspace/` is allowed in the repo's settings, so a background builder never stalls on a permission prompt to read its brief.
 
 ## Paths across machines

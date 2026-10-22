@@ -1,10 +1,6 @@
 ---
 name: cv-engine
 description: "Create, update, tailor, translate and restyle a CV or résumé, built to PDF from a plain YAML content file and a Typst template, with nothing to install beyond uv; write motivation and cover letters and interview stories from the same facts. Use when the user wants to make or edit a CV, tailor one to a job, internship or programme, make a version in another language, change how it looks, get it to fit one page, write a motivation or cover letter, or prepare stories for an interview."
-metadata:
-  status: active
-  review_interval: 90
-  last_reviewed: 2026-10-21
 ---
 
 # CV Engine

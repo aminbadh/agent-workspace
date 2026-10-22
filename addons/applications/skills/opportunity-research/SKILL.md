@@ -1,10 +1,6 @@
 ---
 name: opportunity-research
 description: "Find, screen and track opportunities with a deadline (internships, jobs, funded Master's programmes and scholarships, grants and fellowships, competitions and hackathons, calls for papers or speakers) using web search and a browser, record them in a tracker, verify every link and deadline with a script, and watch sources for new offers. Use when the user wants to find opportunities, check whether one fits, add them to their tracker, check their tracker is still accurate, or watch pages for openings."
-metadata:
-  status: active
-  review_interval: 90
-  last_reviewed: 2026-10-21
 ---
 
 # Opportunity Research
@@ -33,7 +29,7 @@ Read the user's profile, [the guide](reference/guide.md) and any local guide tha
 Use every tool available, best first:
 
 1. **Web search** for postings and programme pages, with the patterns in the guide.
-2. **A browser tool**, when one is connected (Claude in Chrome, Codex's browser, a Playwright server): for LinkedIn, Tanitjobs and other sites that block scripts, and for careers pages that only render in a browser. Use the user's existing session; read, do not act. When a site asks to sign in, stop and ask the user to sign in themselves in that browser; never enter credentials. From a list of results, find each promising offer's own page on the employer's site rather than reading every posting inside the board.
+2. **A browser tool**, when one is connected (Claude in Chrome, Codex's browser, a Playwright server): for LinkedIn, many national job boards and other sites that block scripts, and for careers pages that only render in a browser. Use the user's existing session; read, do not act. When a site asks to sign in, stop and ask the user to sign in themselves in that browser; never enter credentials. From a list of results, find each promising offer's own page on the employer's site rather than reading every posting inside the board.
 3. **What the user pastes**: a link, a screenshot, or the text of a posting. This always works, whatever tools are missing, and is enough on its own.
 
 Always end on the employer's or programme's own page, and record that page, not the board where it was found.

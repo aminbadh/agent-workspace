@@ -91,12 +91,20 @@ When they are applying to something. Move the **applications** add-on in, then:
 3. **Languages,** honestly rated: native, fluent, working, basic.
 4. **Their experience.** Ask for an existing CV first: a file in the folder, a PDF, a Word document, pasted text, or a LinkedIn profile saved as PDF. Read it. Then go section by section (education, work, projects, clubs and volunteering, awards, skills) asking for **what they did and what came of it**, with numbers where they exist. Most people undersell: "I helped with events" often hides "ran a 200-person event". Ask once, kindly, for the result. Write every fact into experience.md under its heading, newest first.
 5. **Where it lives:** the criteria from 1 to 3 go in PROFILE.md under a new "## What I am looking for" section, where the opportunity-research skill reads them. Create an applications domain (for example `career/` or `studies/applications/`) in step 3's shape, whose Constraints link to that section rather than restating it. The tracker is the task home if it is an app that can hold rows with fields, otherwise `opportunities.csv` in the domain folder; name it in the domain's Key Resources.
-6. **First CV:** use the cv-engine skill to start the CV folder at `cv/` inside the applications domain, write the main CV from experience.md, build it and look at the page image. Ask whether they want another language.
-7. Show them experience.md and the CV, and ask them to correct anything wrong now.
+6. **What to watch:** ask which careers pages, catalogues or programme pages they want watched for new openings. If they name some, start `sources.json` beside the tracker from the opportunity-research skill's [example](../opportunity-research/assets/sources.example.json), with one entry per page, and run `watch` once to record the baseline. If they decline, say plainly that the weekly watch is off until they add a page, and that they can say "watch this page" any time.
+7. **First CV:** use the cv-engine skill to start the CV folder at `cv/` inside the applications domain, write the main CV from experience.md, build it and look at the page image. Ask whether they want another language.
+8. Show them experience.md and the CV, and ask them to correct anything wrong now.
 
 ### The building path
 
-When they write code. Move the **building** add-on in, then ask which code repositories the workspace plans for, and give each one a domain in step 3's shape (the domain holds the reasoning; the repo holds the code). Set up BUILDING.md's "Paths across machines" on this computer, since briefs are reached through `~/.links/workspace`: if that link already exists and points elsewhere, ask before changing it. Then walk through "Setting up a repo" with them for the first one.
+When they write code. Move the **building** add-on in, then ask which code repositories the workspace plans for, and give each one a domain in step 3's shape (the domain holds the reasoning; the repo holds the code). Then offer BUILDING.md's "Paths across machines", since builders reach their briefs through `~/.links/workspace`. **It changes their home folder, so nothing is created without a yes:**
+
+1. Explain in two lines what it creates: a hidden `~/.links` folder holding two links, one to this workspace and one to the folder holding their code repos.
+2. Ask where their code repos live. Do not guess a folder.
+3. Check what is already there (`ls -la ~/.links`). If a link exists and points elsewhere, say where, and ask before changing it.
+4. Only once they agree, run the commands from BUILDING.md with their folder, and show the result with `ls -la ~/.links`. If they decline, say that briefs then need full paths on this machine, and move on.
+
+Then walk through "Setting up a repo" with them for the first one.
 
 ## 8. One real thing
 

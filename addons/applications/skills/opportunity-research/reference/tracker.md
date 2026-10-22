@@ -15,7 +15,7 @@ One row per opportunity. A CSV file by default, which opens in Excel, LibreOffic
 | `deadline` | `YYYY-MM-DD`, `rolling`, or `unknown`. Never a guess |
 | `deadline_source` | The page that states the deadline. Required for a dated deadline |
 | `url` | The offer on the employer's or programme's own site |
-| `found_via` | Where it was found: "LinkedIn", "Keejob", "a friend at the company" |
+| `found_via` | Where it was found: "LinkedIn", "a national job board", "a friend at the company" |
 | `fit` | `high`, `medium` or `low` |
 | `why` | The fit in a few checkable words |
 | `status` | `to review`, `applying`, `applied`, `interview`, `offer`, `rejected`, `closed`, `not a fit` |
