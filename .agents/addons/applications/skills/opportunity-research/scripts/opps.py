@@ -61,17 +61,27 @@ MONTHS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "
 
 # ---- Fetching -----------------------------------------------------------------------
 
+TIMEOUT = 45  # seconds; some university and funder sites are slow
+
+
 class Page(HTMLParser):
-    """Visible text and links of a page. Script and style carry no news."""
+    """Visible text and links of a page. Script and style carry no news.
+    With `item_class`, also the title (first visible text) of every element carrying that
+    class, for listings whose entries have no link of their own to watch."""
     SKIP = {"script", "style", "noscript", "svg", "head"}
 
-    def __init__(self):
+    def __init__(self, item_class: str | None = None):
         super().__init__(convert_charrefs=True)
         self.text: list[str] = []
         self.links: list[tuple[str, str]] = []
+        self.items: list[str] = []
         self._skip = 0
         self._href: str | None = None
         self._label: list[str] = []
+        self._item_class = item_class
+        self._item_tag: str | None = None
+        self._item_depth = 0
+        self._item_title: str | None = None
 
     def handle_starttag(self, tag, attrs):
         if tag in self.SKIP:
@@ -79,6 +89,11 @@ class Page(HTMLParser):
         if tag == "a":
             self._href = dict(attrs).get("href")
             self._label = []
+        if self._item_tag is None and self._item_class:
+            if self._item_class in (dict(attrs).get("class") or "").split():
+                self._item_tag, self._item_depth, self._item_title = tag, 1, None
+        elif tag == self._item_tag:
+            self._item_depth += 1
 
     def handle_endtag(self, tag):
         if tag in self.SKIP and self._skip:
@@ -86,48 +101,56 @@ class Page(HTMLParser):
         if tag == "a" and self._href:
             self.links.append((self._href, " ".join(self._label).strip()))
             self._href = None
+        if tag == self._item_tag:
+            self._item_depth -= 1
+            if self._item_depth == 0:
+                if self._item_title:
+                    self.items.append(self._item_title[:160])
+                self._item_tag = None
 
     def handle_data(self, data):
         if not self._skip and data.strip():
             self.text.append(data.strip())
             if self._href is not None:
                 self._label.append(data.strip())
+            if self._item_tag is not None and self._item_title is None:
+                self._item_title = re.sub(r"\s+", " ", data.strip())
 
 
-def _curl(url: str) -> tuple[int | None, str, Page | None, str]:
+def _curl(url: str, item_class: str | None = None) -> tuple[int | None, str, Page | None, str]:
     """Fallback for servers that omit an intermediate certificate: curl's trust store often
     completes the chain where Python's cannot. Verification stays on in both."""
     try:
-        out = subprocess.run(["curl", "-sS", "--location", "--max-time", "30", "-A", UA,
+        out = subprocess.run(["curl", "-sS", "--location", "--max-time", str(TIMEOUT), "-A", UA,
                               "-w", "\n%{http_code} %{url_effective}", url],
-                             capture_output=True, text=True, errors="replace", timeout=45)
+                             capture_output=True, text=True, errors="replace", timeout=TIMEOUT + 15)
     except (OSError, subprocess.TimeoutExpired):
         return None, url, None, "certificate error"
     if out.returncode != 0:
         return None, url, None, "certificate error"
     body, _, tail = out.stdout.rpartition("\n")
     code, _, final = tail.partition(" ")
-    page = Page()
+    page = Page(item_class)
     page.feed(body)
     return int(code), final or url, page, ""
 
 
-def fetch(client: None, url: str) -> tuple[int | None, str, Page | None, str]:
+def fetch(client: None, url: str, item_class: str | None = None) -> tuple[int | None, str, Page | None, str]:
     """Status code, final URL, parsed page, and an error message when there is no page.
     Standard library only, so the script needs nothing downloaded to run."""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
-        with urllib.request.urlopen(req, timeout=30, context=ssl.create_default_context()) as r:
+        with urllib.request.urlopen(req, timeout=TIMEOUT, context=ssl.create_default_context()) as r:
             status, final, ctype, raw = r.status, r.geturl(), r.headers.get("content-type", "html"), r.read()
     except urllib.error.HTTPError as e:
         return e.code, url, Page(), ""
     except urllib.error.URLError as e:
         if isinstance(getattr(e, "reason", None), ssl.SSLError):
-            return _curl(url)
+            return _curl(url, item_class)
         return None, url, None, type(e.reason).__name__ if hasattr(e, "reason") else "URLError"
     except (TimeoutError, OSError) as e:
         return None, url, None, type(e).__name__
-    page = Page()
+    page = Page(item_class)
     if "html" in ctype:
         page.feed(raw.decode("utf-8", "replace"))
     return status, final, page, ""
@@ -308,19 +331,44 @@ def verify(argv: list[str]) -> int:
 
 # ---- Watch --------------------------------------------------------------------------
 
-DATE_RE = re.compile(
-    r"\b\d{1,2}\s+(?:" + "|".join(MONTHS_EN + MONTHS_FR) + r")\s+\d{4}\b|"
-    r"\b(?:" + "|".join(MONTHS_EN) + r")\s+\d{1,2},?\s+\d{4}\b|"
-    r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}[./]\d{1,2}[./]\d{4}\b", re.I)
+_MONTH = "|".join(MONTHS_EN + MONTHS_FR)
+DATE_FORMS = (  # day month year; month day, year (with or without an ordinal); ISO; d/m/y
+    re.compile(r"\b(\d{1,2})(?:st|nd|rd|th|er)?\s+(" + _MONTH + r")\s+(\d{4})\b", re.I),
+    re.compile(r"\b(" + "|".join(MONTHS_EN) + r")\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b", re.I),
+    re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b"),
+    re.compile(r"\b(\d{1,2})[./](\d{1,2})[./](\d{4})\b"),
+)
+
+
+def dates_in(text: str) -> set[str]:
+    """Every date on a page as YYYY-MM-DD, so "1 March 2027", "March 1st, 2027" and
+    "01/03/2027" count as one date and a page reformatting a date is not news."""
+    found = set()
+    month_no = {m: i % 12 + 1 for i, m in enumerate(MONTHS_EN + MONTHS_FR)}
+    for i, form in enumerate(DATE_FORMS):
+        for g in form.findall(text):
+            if i == 0:
+                d, m, y = int(g[0]), month_no[g[1].lower()], int(g[2])
+            elif i == 1:
+                m, d, y = month_no[g[0].lower()], int(g[1]), int(g[2])
+            elif i == 2:
+                y, m, d = int(g[0]), int(g[1]), int(g[2])
+            else:
+                d, m, y = int(g[0]), int(g[1]), int(g[2])
+            if 1 <= m <= 12 and 1 <= d <= 31:
+                found.add(f"{y:04d}-{m:02d}-{d:02d}")
+    return found
 
 
 def watch(argv: list[str]) -> int:
-    """Each source is {"label", "url", "kind": "links" or "dates", "match": optional,
-    "pages": optional}. links: report links (filtered by `match`) that appeared or vanished,
-    for career pages and catalogues; `pages` reads a paginated listing as url?page=0 to
-    pages-1 (set it one above the current count, so growth is not cut off). dates: report
-    dates that appeared or vanished, for a page whose window has not been announced yet.
-    State is kept beside the sources file."""
+    """Each source is {"label", "url", "kind": "links", "items" or "dates", plus "match",
+    "item_class" and "pages" where they apply}. links: report links (filtered by `match`)
+    that appeared or vanished, for career pages. items: report entries that appeared or
+    vanished in a listing whose entries need not have links, each entry being an element
+    with class `item_class`, named by its first text. `pages` (links and items) reads a
+    paginated listing as url?page=0 to pages-1; set it one above the current count, so
+    growth is not cut off. dates: report dates that appeared or vanished, for a page whose
+    window has not been announced yet. State is kept beside the sources file."""
     src_path = pathlib.Path(argv[0])
     sources = json.loads(src_path.read_text())
     state_path = src_path.with_name(src_path.stem + ".state.json")
@@ -329,24 +377,29 @@ def watch(argv: list[str]) -> int:
     with client() as c:
         for s in sources:
             key = hashlib.sha1(s["url"].encode()).hexdigest()[:12]
-            status, final, page, err = fetch(c, s["url"])
+            kind = s.get("kind", "links")
+            item_class = s.get("item_class") if kind == "items" else None
+            status, final, page, err = fetch(c, s["url"], item_class)
             if not page or (status and status >= 400):
                 print(f"FAILED   {s['label']}: {err or status}")
                 changed = True
                 continue
-            if s.get("kind", "links") == "dates":
-                now = sorted({m.group(0).lower() for m in DATE_RE.finditer(" ".join(page.text))})
+            if kind == "dates":
+                now = sorted(dates_in(" ".join(page.text)))
             else:
                 pages = [(final, page)]
                 sep = "&" if "?" in s["url"] else "?"
                 for p in range(1, int(s.get("pages", 1))):
-                    _, f_p, pg_p, _ = fetch(c, f"{s['url']}{sep}page={p}")
+                    _, f_p, pg_p, _ = fetch(c, f"{s['url']}{sep}page={p}", item_class)
                     if pg_p:
                         pages.append((f_p, pg_p))
-                now = sorted({f"{l or '(no text)'} | {urljoin(f, h)}" for f, pg in pages
-                              for h, l in pg.links if s.get("match", "") in urljoin(f, h)})
+                if kind == "items":
+                    now = sorted({t for _, pg in pages for t in pg.items})
+                else:
+                    now = sorted({f"{l or '(no text)'} | {urljoin(f, h)}" for f, pg in pages
+                                  for h, l in pg.links if s.get("match", "") in urljoin(f, h)})
                 if not now:
-                    print(f"EMPTY    {s['label']}: no matching links; the page may need a browser")
+                    print(f"EMPTY    {s['label']}: nothing matched; the page may need a browser")
             before = state.get(key)
             state[key] = now
             if before is None:

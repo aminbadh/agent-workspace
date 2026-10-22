@@ -6,6 +6,13 @@
     "match": "/jobs/r"
   },
   {
+    "label": "Example: a programme catalogue whose entries have no links of their own",
+    "url": "https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus-catalogue_en",
+    "kind": "items",
+    "item_class": "ecl-card",
+    "pages": 12
+  },
+  {
     "label": "Example: a programme page whose 2027 window is not announced yet",
     "url": "https://deai.ulb.be/home/students/admission/",
     "kind": "dates"

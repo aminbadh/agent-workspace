@@ -62,7 +62,7 @@ It opens every open row and flags: a dead or missing page, a page that does not 
 
 ## 6. Watch
 
-For pages that will change (a careers page, a catalogue, a programme with no dates yet), add an entry to a sources file beside the tracker, following [the example](assets/sources.example.json), then:
+For pages that will change (a careers page, a catalogue, a programme with no dates yet), add an entry to a sources file beside the tracker, following [the example](assets/sources.example.json), and name the file in the domain's CONTEXT.md so the weekly review finds it. Three kinds: `links` for a careers page (new postings are new links), `items` for a listing whose entries may have no link of their own (give the HTML class of one entry as `item_class`), and `dates` for a page whose window is not announced yet. Then:
 
 ```
 uv run <skill>/scripts/opps.py watch <sources.json>
@@ -78,7 +78,7 @@ When the user picks an offer, hand it to the cv-engine skill to tailor a CV, and
 
 Run in the user's weekly review. Read only, as everywhere in this skill.
 
-1. **Watch:** run `watch` on each sources file the workspace keeps beside its trackers. Report what appeared or vanished, and add or update rows for anything new.
+1. **Watch:** run `watch` on each sources file a domain's CONTEXT.md names. Report what appeared or vanished, and add or update rows for anything new.
 2. **Waiting for a reply:** list rows at `applied`, oldest first, with how long each has waited (from `added` and its notes). Whether to follow up is the user's call; never message anyone.
 3. **Replies, when the workspace has email access** (an MCP server, a connector or a CLI): read messages from the organisations with open rows since the last review, and propose each status change (`interview`, `rejected`, `offer`) with the message it rests on. Update the tracker once the user agrees. Never reply, archive or label.
 4. **Closing soon:** list rows at `to review` or `applying` whose deadline falls in the next two weeks.
