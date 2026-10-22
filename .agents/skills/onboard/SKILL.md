@@ -44,7 +44,7 @@ Write it down:
 
 ## 3. Their first domains
 
-Create a domain for each thing they are working on, rather than explaining the pattern and leaving it empty. Read [CONVENTIONS.md](../../../CONVENTIONS.md) first.
+Create a domain for each thing they are working on, rather than explaining the pattern and leaving it empty. Read [CONVENTIONS.md](../../CONVENTIONS.md) first.
 
 - **Place each one in an area of life**: a top-level folder such as `studies/`, `work/` or `personal/`, named in their words. One domain in an area can sit straight in the area folder's place (`studies/` as the domain itself). Two or more in one area: the area gets its own index `CONTEXT.md` with one row per child, as CONVENTIONS.md describes, and each child gets a folder inside it.
 - **Write each from the templates** in [assets/](assets/CONTEXT.md): `CONTEXT.md` and `DECISIONS.md`. Fill the overview and current picture from what they said, and ask for what is missing: what is being done now, what is next, any hard limits, who matters. A domain they are not working on now is `dormant`.
@@ -80,7 +80,7 @@ The [weekly-review skill](../weekly-review/SKILL.md) does the same upkeep for ev
 
 ## 7. Add-ons
 
-Each folder in [addons/](../../../addons/README.md) is an add-on, with a README saying what it gives. Offer the ones their answers point to, in one line each, and move in the ones they pick (see [moving an add-on in](#moving-an-add-on-in)). Never move one in unasked. Then run its path below.
+Each folder in [addons/](../../addons/README.md) is an add-on, with a README saying what it gives. Offer the ones their answers point to, in one line each, and move in the ones they pick (see [moving an add-on in](#moving-an-add-on-in)). Never move one in unasked. Then run its path below.
 
 ### The applications path
 
@@ -117,7 +117,7 @@ Finish with a task that matches what they came for, using what they just told yo
 
 ## 9. Close
 
-Run `uv run scripts/workspace-lint.py` and fix anything it reports. Then end with a few lines:
+Run `uv run .agents/scripts/workspace-lint.py` and fix anything it reports. Then end with a few lines:
 
 - what was created and where (their domains, the task home, the rhythm, any add-on);
 - two or three things they can say next time ("what should I do now?", "it's review time", something from their add-on);
@@ -140,5 +140,5 @@ An add-on's README says what it gives, where each of its files goes, and the row
 2. **The Claude Code links:** for each skill, `ln -s ../../.agents/skills/<name> .claude/skills/<name>`, then `ls -la .claude/skills` to check every link resolves. On a system where links fail (some Windows setups), copy the folder instead and say so.
 3. **Its files:** move each to where its README says.
 4. **AGENTS.md:** add its row or rows to the skills table.
-5. **Remove the add-on's now-empty folder**, README included, so [addons/](../../../addons/README.md) holds only what is not yet installed. The folder itself stays, so another add-on can be added later.
-6. Run `uv run scripts/workspace-lint.py`.
+5. **Remove the add-on's now-empty folder**, README included, so [addons/](../../addons/README.md) holds only what is not yet installed. The folder itself stays, so another add-on can be added later.
+6. Run `uv run .agents/scripts/workspace-lint.py`.

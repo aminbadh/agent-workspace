@@ -9,8 +9,8 @@ Rot in a workspace like this is never loud. A replaced deadline reads exactly li
 one, so this script makes staleness and contradiction visible without anyone having to
 remember to look. The rules it enforces are written out in CONVENTIONS.md.
 
-Usage:  uv run scripts/workspace-lint.py [--quiet]
-        (or: python3 scripts/workspace-lint.py, with Python 3.11 or newer)
+Usage:  uv run .agents/scripts/workspace-lint.py [--quiet]
+        (or: python3 .agents/scripts/workspace-lint.py, with Python 3.11 or newer)
 Exit:   0 if clean or warnings only, 1 if any error was found.
 """
 import datetime as dt
@@ -20,7 +20,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 TODAY = dt.date.today()
 STALE_DAYS = 14            # default review interval; a file can declare its own
 DORMANT_DAYS = 90          # dormant files surface after this, to be archived or woken
@@ -29,9 +29,9 @@ VALID_STATUS = {"active", "dormant", "archived"}
 
 # Trees whose files are not this workspace's own prose. Skills are released copies, rewritten
 # when they are updated; .claude/ only mirrors .agents/ by symlink, so skipping it avoids
-# reporting the same file twice; addons/ holds files written for where they land once moved
+# reporting the same file twice; the add-ons in .agents/addons/ hold files written for where they land once moved
 # in, so their links only resolve there.
-GENERATED = (".agents/skills/", ".claude/", ".cursor/", "addons/", "node_modules/")
+GENERATED = (".agents/skills/", ".claude/", ".cursor/", ".agents/addons/", "node_modules/")
 
 errors, warnings, notes = [], [], []
 

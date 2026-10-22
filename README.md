@@ -28,14 +28,14 @@ The core is small on purpose:
 | File | What it is |
 |---|---|
 | [AGENTS.md](AGENTS.md) | The rules every agent follows. Onboarding adds how you want it to work and write for you |
-| [CONVENTIONS.md](CONVENTIONS.md) | The full spec: frontmatter, freshness, folders, links, dates, the task home, skills |
+| [CONVENTIONS.md](.agents/CONVENTIONS.md) | The full spec: frontmatter, freshness, folders, links, dates, the task home, skills |
 | [PROFILE.md](PROFILE.md) | Who you are. Blank until onboarding fills it |
-| [scripts/workspace-lint.py](scripts/workspace-lint.py) | The linter: stale files, broken links, dates where they do not belong. No dependencies |
+| [The linter](.agents/scripts/workspace-lint.py) | The linter: stale files, broken links, dates where they do not belong. No dependencies |
 | [onboard](.agents/skills/onboard/SKILL.md) | The first-session interview, later updates, and adding an add-on |
 | [weekly-review](.agents/skills/weekly-review/SKILL.md) | Upkeep, then your own planning rhythm |
 | [one-thing](.agents/skills/one-thing/SKILL.md) | Picks the single thing to do now |
 
-[Add-ons](addons/README.md) wait in `addons/` until onboarding moves in the ones you pick, so an unused one never clutters your workspace:
+[Add-ons](.agents/addons/README.md) wait in `.agents/addons/` until onboarding moves in the ones you pick, so an unused one never clutters your workspace:
 
 - **Applications:** for applying to internships, jobs, Master's programmes, scholarships and more. A CV engine (plain content file to PDF, tailored copies, letters, interview stories) and opportunity research (find, screen, track, and verify every link and deadline).
 - **Building:** for writing code with AI agents. One session plans and keeps the docs true; short-lived builders work in each repo from a written brief.
@@ -54,9 +54,9 @@ The workspace its maintainer has run their own work and studies from since March
 
 ## For the maintainer
 
-This repository is a release of the maintainer's own workspace. The generic files (the three core skills, the applications add-on's skills, the linter, CONVENTIONS.md, the building add-on's BUILDING.md and [addons/README.md](addons/README.md)) are edited only there and copied here word for word by the release script, minus review dates. Never edit them here. The starter owns only PROFILE.md and AGENTS.md (blank templates), this README, LICENSE, .gitignore, CLAUDE.md and the add-on READMEs other than the index. To release, run the script, review the diff and commit.
+This repository is a release of the maintainer's own workspace. The generic files (the three core skills, the applications add-on's skills, the linter, CONVENTIONS.md, the building add-on's BUILDING.md and [the add-ons index](.agents/addons/README.md)) are edited only there and copied here word for word by the release script, minus review dates. Never edit them here. The starter owns only PROFILE.md and AGENTS.md (blank templates), this README, LICENSE, .gitignore, CLAUDE.md and the add-on READMEs other than the index. To release, run the script, review the diff and commit.
 
 ```bash
-./scripts/release.sh                   # from ~/.links/workspace
-WORKSPACE=<dir> ./scripts/release.sh   # from anywhere else
+./.agents/scripts/release.sh                   # from ~/.links/workspace
+WORKSPACE=<dir> ./.agents/scripts/release.sh   # from anywhere else
 ```

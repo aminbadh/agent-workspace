@@ -5,10 +5,10 @@
 # word for word apart from review dates, so the starter works on its own. Never edit them here.
 # Run it, review the diff, commit.
 #
-#   ./scripts/release.sh                    from ~/.links/workspace
-#   WORKSPACE=<dir> ./scripts/release.sh
+#   ./.agents/scripts/release.sh                    from ~/.links/workspace
+#   WORKSPACE=<dir> ./.agents/scripts/release.sh
 set -euo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 SRC="${WORKSPACE:-$HOME/.links/workspace}"
 [ -d "$SRC" ] || { echo "no workspace at $SRC" >&2; exit 1; }
 
@@ -22,7 +22,7 @@ release_skill() {
   find "$2/$1" \( -name __pycache__ -o -name .DS_Store \) -prune -exec rm -rf {} +
 }
 for s in onboard weekly-review one-thing; do release_skill "$s" .agents/skills; done
-for s in cv-engine opportunity-research; do release_skill "$s" addons/applications/skills; done
+for s in cv-engine opportunity-research; do release_skill "$s" .agents/addons/applications/skills; done
 
 # A single file: its workspace path, then its path here.
 release_file() {
@@ -30,15 +30,15 @@ release_file() {
   mkdir -p "$(dirname "$2")"
   cp "$SRC/$1" "$2"
 }
-release_file scripts/workspace-lint.py scripts/workspace-lint.py
-release_file CONVENTIONS.md CONVENTIONS.md
-release_file BUILDING.md addons/building/BUILDING.md
-release_file addons/README.md addons/README.md
+release_file .agents/scripts/workspace-lint.py .agents/scripts/workspace-lint.py
+release_file .agents/CONVENTIONS.md .agents/CONVENTIONS.md
+release_file .agents/BUILDING.md .agents/addons/building/BUILDING.md
+release_file .agents/addons/README.md .agents/addons/README.md
 
 # Released copies carry no review dates: a user cannot review a skill they did not write, so
 # their linter must never flag one. Strip status, review_interval and last_reviewed from the
 # frontmatter's metadata: block, and drop metadata: itself if nothing is left under it.
-for f in .agents/skills/*/SKILL.md addons/applications/skills/*/SKILL.md; do
+for f in .agents/skills/*/SKILL.md .agents/addons/applications/skills/*/SKILL.md; do
   awk '
     NR == 1 && $0 == "---" { fm = 1; print; next }
     fm && $0 == "---"      { if (held) held = ""; fm = 0; print; next }

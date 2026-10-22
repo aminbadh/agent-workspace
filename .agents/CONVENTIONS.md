@@ -1,6 +1,6 @@
 # Workspace Conventions
 
-The rules that keep this workspace readable by agents and honest about its own age. [AGENTS.md](AGENTS.md) carries the short version every agent follows. This file is the full spec, read when creating or restructuring a domain.
+The rules that keep this workspace readable by agents and honest about its own age. [AGENTS.md](../AGENTS.md) carries the short version every agent follows. This file is the full spec, read when creating or restructuring a domain.
 
 ## The problem these rules solve
 
@@ -12,6 +12,8 @@ Two rules follow from that, and everything else is detail:
 2. **One fact, one home.** Everywhere else points at that home.
 
 ## The top level is organized by life context
+
+**The root holds the user and their domains; `.agents/` holds how the agent works.** At the root: AGENTS.md and CLAUDE.md (tools look for them there), the files about the user (PROFILE.md, and COMPASS.md, TASKS.md or experience.md when installed), README.md, the domain folders and `.archive/`. Everything the agent runs or reads on demand lives in `.agents/`: this file, the skills, the add-ons, the scripts and their `.env`, and any spec a skill or rule points to. A script that serves one domain lives in that domain's `_working/`, beside the files it reads. Dot-folders are hidden in most file browsers and skipped by most search tools by default, which is the point: rules and machinery stay out of the way of the content, and AGENTS.md links to everything an agent needs from them.
 
 Top-level folders (for example `work/`, `studies/`, `personal/`) are **areas of life**, not statuses. Whether something is being worked on lives in frontmatter (`status`), because changing a status is a one-line edit while moving a folder breaks every link to it and every `parent:` field.
 
@@ -48,7 +50,7 @@ last_reviewed: 2026-10-21
 
 ### Staleness
 
-An `active` file whose `last_reviewed` is older than its review interval is suspect. Say so rather than trusting it: "this was last verified on X, treat the dates with caution." `uv run scripts/workspace-lint.py` reports these.
+An `active` file whose `last_reviewed` is older than its review interval is suspect. Say so rather than trusting it: "this was last verified on X, treat the dates with caution." `uv run .agents/scripts/workspace-lint.py` reports these.
 
 The interval is 14 days unless the file says otherwise. A file that knows its own rhythm declares it in `review_interval` rather than the tooling keeping a list of exceptions: a profile might declare 60, because a name and a graduation year do not move, and a Compass 30, because it is reviewed monthly. A `dormant` file inherits 90 instead, so it surfaces to be archived or woken rather than sitting forever.
 
@@ -133,11 +135,11 @@ A parent `CONTEXT.md` is an **index**, not a summary. One row per child: name, s
 
 The moment a parent restates a child's deadline, there are two copies of that deadline and one of them will be wrong. The linter warns when an index file carries dates.
 
-The same rule holds across domains. Identity lives in [PROFILE.md](PROFILE.md), money in one finance domain, and so on. Reference them; do not copy them.
+The same rule holds across domains. Identity lives in [PROFILE.md](../PROFILE.md), money in one finance domain, and so on. Reference them; do not copy them.
 
 ## The task home
 
-**The task home holds anything row-shaped with a live status**: tasks, projects, trackers, content calendars, and every date to act on. **This repo holds reasoning, decisions and context.** A task home is either a task app the agent can reach (through an MCP server, a connector or a command-line tool) or a TASKS.md file at the root, started from [the template](.agents/skills/onboard/assets/TASKS.md). Onboarding sets it up, and [AGENTS.md](AGENTS.md#tasks) says which one this workspace uses and how to write to it.
+**The task home holds anything row-shaped with a live status**: tasks, projects, trackers, content calendars, and every date to act on. **This repo holds reasoning, decisions and context.** A task home is either a task app the agent can reach (through an MCP server, a connector or a command-line tool) or a TASKS.md file at the root, started from [the template](skills/onboard/assets/TASKS.md). Onboarding sets it up, and [AGENTS.md](../AGENTS.md#tasks) says which one this workspace uses and how to write to it.
 
 Why the split works: a task app is good at surfacing what is due and bad at holding why. A folder of Markdown is the opposite. Each does the job it is good at, and the link between them is one line: a `CONTEXT.md` links to its project in the task home rather than copying its tasks, because a copied task is a stale task.
 
@@ -160,7 +162,7 @@ A skill is a **procedure the user asks for by name**: a recurring pass with an o
 
 **What goes where.** A skill only runs when invoked, and agents often fail to invoke one on their own. So:
 
-- **Rules that must always hold** stay in [AGENTS.md](AGENTS.md), which every session loads.
+- **Rules that must always hold** stay in [AGENTS.md](../AGENTS.md), which every session loads.
 - **Procedures and workflows** are skills, called by name or pointed to from AGENTS.md's skills table.
 - **Steps that must come out the same every time** are scripts, run by the skill.
 - **Specs and boundaries** that a skill or rule refers to, like this file, stay plain files.
@@ -187,7 +189,7 @@ Archiving is not deletion: git keeps the history. The point is a lighter live tr
 ## Adding a domain
 
 1. Create the folder at the right level.
-2. Write `CONTEXT.md` with full frontmatter and the required sections ([the template](.agents/skills/onboard/assets/CONTEXT.md)).
+2. Write `CONTEXT.md` with full frontmatter and the required sections ([the template](skills/onboard/assets/CONTEXT.md)).
 3. Add a row to the parent's index table.
 4. Create `_working/` when there is something to put in it, not before.
-5. Run `uv run scripts/workspace-lint.py`.
+5. Run `uv run .agents/scripts/workspace-lint.py`.

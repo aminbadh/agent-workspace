@@ -19,10 +19,10 @@ Two jobs, kept apart. **Upkeep** is the same for everyone and keeps the files tr
 
 ### 2. Work the linter
 
-`uv run scripts/workspace-lint.py`. Fix the errors. Then, for each warned file:
+`uv run .agents/scripts/workspace-lint.py`. Fix the errors. Then, for each warned file:
 
 - **Read it and check it against reality**: the task home, the sources it was filled from, the user. **Do not just bump the date.** Bumping without verifying turns a stale file into one that looks fresh.
-- Look for: Next Up items already done, blocked (name the blocker; if it is a person, the item is the unblock) or not actions at all; dates written as pending that have passed, or that belong in the task home ([CONVENTIONS.md](../../../CONVENTIONS.md#dates)); facts stated in two places (the more specific file wins).
+- Look for: Next Up items already done, blocked (name the blocker; if it is a person, the item is the unblock) or not actions at all; dates written as pending that have passed, or that belong in the task home ([CONVENTIONS.md](../../CONVENTIONS.md#dates)); facts stated in two places (the more specific file wins).
 - Fix what rotted, then bump `last_reviewed`. If nothing rotted, say so and bump.
 - **Stable by nature** rather than unreviewed: give it a longer `review_interval` instead of rereading it every fortnight.
 - **Dormant and flagged:** archive it or wake it. Dormant is a holding state, not a graveyard.

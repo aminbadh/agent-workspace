@@ -8,12 +8,12 @@ For anyone who writes code with AI agents and wants the workspace to plan it.
 
 | From | To |
 |---|---|
-| `BUILDING.md` | `BUILDING.md` at the workspace root |
+| `BUILDING.md` | `.agents/BUILDING.md`, beside CONVENTIONS.md |
 
 **Row it adds to AGENTS.md's skills table:**
 
 ```markdown
-| [Building](BUILDING.md) | Writing a brief, launching a builder or reviewing one. Read it before planning code work |
+| [Building](.agents/BUILDING.md) | Writing a brief, launching a builder or reviewing one. Read it before planning code work |
 ```
 
 It has no skill of its own: the workflow is a file the agent reads before any code work, linked from the table.
