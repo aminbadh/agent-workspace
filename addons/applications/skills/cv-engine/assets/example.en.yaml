@@ -1,0 +1,52 @@
+# CV content. Every fact here is about the person; the look lives in template.typ.
+# Text is printed as written. Wrap words in *stars* to make them bold.
+# The full format is in the cv-engine skill's reference/content-format.md.
+
+lang: en          # en, fr, ... sets hyphenation and quotation marks
+paper: a4         # a4 or us-letter
+max_pages: 1      # the build warns when the CV runs longer
+
+name: Sam Example
+headline: Business Analytics student · seeking a 6-month internship from February 2027
+contact:
+  - text: sam@example.com
+    url: mailto:sam@example.com
+  - +216 00 000 000
+  - Tunis, Tunisia
+  - text: linkedin.com/in/sam-example
+    url: https://linkedin.com/in/sam-example
+
+sections:
+  - title: Education
+    entries:
+      - title: Example Business School
+        role: BSc in Business Administration, Business Analytics
+        place: Tunis, Tunisia
+        date: 2023 – 2027
+        bullets:
+          - "Relevant courses: data mining, statistics, databases, marketing analytics"
+
+  - title: Experience
+    entries:
+      - title: Example Company
+        role: Data Analyst Intern
+        place: Tunis
+        date: Jun – Aug 2026
+        bullets:
+          - Built a sales dashboard used weekly by *4 regional managers*
+          - Cut monthly reporting time from *2 days to 3 hours* by automating the data pull
+
+  - title: Projects
+    entries:
+      - title: Student Housing Price Study
+        url: https://github.com/example/housing
+        date: 2026
+        bullets:
+          - Scraped and cleaned *1,200 listings*; found rent varies most with distance to campus
+
+  - title: Skills
+    lines:
+      - label: Tools
+        text: Python, SQL, Excel, Power BI
+      - label: Languages
+        text: Arabic (native), French (fluent), English (fluent)

@@ -14,6 +14,7 @@ Usage:  uv run scripts/workspace-lint.py [--quiet]
 Exit:   0 if clean or warnings only, 1 if any error was found.
 """
 import datetime as dt
+import os
 import re
 import subprocess
 import sys
@@ -22,32 +23,47 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TODAY = dt.date.today()
 STALE_DAYS = 14            # default review interval; a file can declare its own
+DORMANT_DAYS = 90          # dormant files surface after this, to be archived or woken
 MAX_CONTEXT_LINES = 120    # CONVENTIONS.md aims for 100 and warns here
 VALID_STATUS = {"active", "dormant", "archived"}
 
-# Folders rewritten by their own tooling. Linting them produces notes nobody can act on.
-SKIP = (".claude/", ".agents/", ".cursor/", "node_modules/")
+# Trees whose files are not this workspace's own prose. Skills are released copies, rewritten
+# when they are updated; .claude/ only mirrors .agents/ by symlink, so skipping it avoids
+# reporting the same file twice; addons/ holds files written for where they land once moved
+# in, so their links only resolve there.
+GENERATED = (".agents/skills/", ".claude/", ".cursor/", "addons/", "node_modules/")
 
 errors, warnings, notes = [], [], []
 
 
+def rel(p):
+    return p.relative_to(ROOT).as_posix()
+
+
+def own_skill(f):
+    # A skill opts back in by declaring last_reviewed in its own frontmatter, so no list of
+    # names lives here. Skills that ship without it are skipped.
+    if not (f.startswith(".agents/skills/") and f.endswith("/SKILL.md")):
+        return False
+    head = (ROOT / f).read_text().split("\n---\n", 1)[0]
+    return "last_reviewed:" in head
+
+
 def markdown_files():
     """Every Markdown file git knows about or would add: tracked plus untracked, minus
-    anything .gitignore excludes. Falls back to a plain walk outside a git repository."""
+    anything .gitignore excludes. New files are where mistakes are freshest. Falls back to a
+    plain walk outside a git repository, for a workspace downloaded as a zip."""
     try:
         out = subprocess.run(
             ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
             cwd=ROOT, capture_output=True, text=True, check=True).stdout
-        files = [ROOT / f for f in out.split("\0") if f]
+        names = [f for f in out.split("\0") if f]
     except (subprocess.CalledProcessError, FileNotFoundError):
-        files = [p for p in ROOT.rglob("*") if ".git" not in p.parts]
-    return sorted({f for f in files
-                   if f.suffix == ".md" and f.exists()
-                   and not rel(f).startswith(SKIP)}, key=rel)
-
-
-def rel(p):
-    return p.relative_to(ROOT).as_posix()
+        names = [rel(p) for p in ROOT.rglob("*.md") if ".git" not in p.parts]
+    # A file deleted in the working tree is still tracked until the deletion is committed.
+    return sorted({ROOT / f for f in names
+                   if f.endswith(".md") and (ROOT / f).is_file()
+                   and (not f.startswith(GENERATED) or own_skill(f))}, key=rel)
 
 
 def frontmatter(text):
@@ -95,7 +111,10 @@ for p in REVIEWED:
     except (TypeError, ValueError):
         errors.append(f"{rel(p)}: last_reviewed is {raw!r}, expected YYYY-MM-DD")
         continue
-    interval = STALE_DAYS
+    # The default stays 14, so only the files where 14 is wrong say anything. Dormant files
+    # get a long default instead of none, so they surface to be archived or woken.
+    default = DORMANT_DAYS if status == "dormant" else STALE_DAYS
+    interval = default
     if "review_interval" in fm:
         try:
             interval = int(fm["review_interval"])
@@ -104,14 +123,17 @@ for p in REVIEWED:
         except ValueError:
             errors.append(f"{rel(p)}: review_interval is {fm['review_interval']!r}, "
                           f"expected a positive whole number of days")
-            interval = STALE_DAYS
+            interval = default
     age = (TODAY - reviewed).days
     if age < 0:
         errors.append(f"{rel(p)}: last_reviewed {raw} is in the future")
     elif status == "active" and age > interval:
-        detail = "" if interval == STALE_DAYS else f", its interval is {interval}"
+        detail = "" if interval == default else f", its interval is {interval}"
         warnings.append(f"{rel(p)}: active but last verified {age} days ago ({raw}{detail}). "
                         f"Read it, fix what rotted, then bump the date")
+    elif status == "dormant" and age > interval:
+        warnings.append(f"{rel(p)}: dormant and last reviewed {age} days ago ({raw}). "
+                        f"Archive it or wake it")
     if p.name == "CONTEXT.md":
         n = len(text.splitlines())
         if n > MAX_CONTEXT_LINES:
@@ -120,7 +142,10 @@ for p in REVIEWED:
 
 # --- 2. `parent` must name the folder the file actually sits in ---------------
 # Nothing else reads `parent`, so a file moved between folders keeps a wrong one forever.
+# Archived files are exempt: their parent was right when they were archived.
 for p in REVIEWED:
+    if archived(p):
+        continue
     fm = frontmatter(p.read_text())
     if not fm or "parent" not in fm:
         continue
@@ -138,7 +163,7 @@ for p in CONTEXTS:
             errors.append(f"{rel(p)}: under .archive/ but status is {fm.get('status')!r}")
 
 # --- 4. broken links, and live links into the archive -------------------------
-LINK = re.compile(r'\[[^\]]*\]\(([^)#]+?)\)')
+LINK = re.compile(r'\[[^\]]*\]\(([^)#]+?)(?:#[^)]*)?\)')   # the file, without its #anchor
 CODE = re.compile(r'```.*?```|`[^`]*`', re.S)
 for p in FILES:
     if archived(p):
@@ -168,7 +193,20 @@ for p in LIVE:
         warnings.append(f"{rel(p)}: index file carries date(s) that likely belong to a child: "
                         f"{', '.join(found[:4])}. Link instead of restating")
 
-# --- 6. wikilinks, which only Obsidian resolves --------------------------------
+# --- 6. structural folders carry a leading underscore -------------------------
+# So they sort above child domains (CONVENTIONS.md, Folder vocabulary).
+STRUCTURAL = {"working", "sources", "deliverables", "meetings"}
+for p in FILES:
+    parts = rel(p).split("/")
+    if parts[0] == ".archive":
+        continue
+    bare = STRUCTURAL.intersection(parts[:-1])
+    if bare:
+        name = sorted(bare)[0]
+        errors.append(f"{rel(p)}: lives under `{name}/`. Rename it `_{name}/` "
+                      f"per CONVENTIONS.md")
+
+# --- 7. wikilinks, which only Obsidian resolves --------------------------------
 WIKI = re.compile(r'\[\[([^\]|]+)(?:\|[^\]]*)?\]\]')
 for p in FILES:
     if archived(p):
@@ -177,16 +215,48 @@ for p in FILES:
         warnings.append(f"{rel(p)}: [[{target}]] is an Obsidian wikilink. Use a Markdown link "
                         f"so other tools and this linter can follow it")
 
-# --- 7. real files written as code, which nothing can check -------------------
+# --- 8. real files written as code, which nothing can check -------------------
 BACKTICK = re.compile(r'`([A-Za-z0-9._][A-Za-z0-9._/-]*\.(?:md|pdf|docx|pptx))`')
 GENERIC = {"CONTEXT.md", "DECISIONS.md", "AGENTS.md", "CLAUDE.md", "CONVENTIONS.md",
-           "README.md", "TASKS.md", "COMPASS.md"}
+           "README.md", "PROFILE.md", "TASKS.md", "COMPASS.md", "BUILDING.md",
+           "experience.md", "SKILL.md"}
 for p in FILES:
     if archived(p) or p.name in ("CONVENTIONS.md", "AGENTS.md", "README.md"):
         continue
     for m in set(BACKTICK.findall(p.read_text())):
         if m not in GENERIC and ((p.parent / m).exists() or (ROOT / m).exists()):
             notes.append(f"{rel(p)}: `{m}` is a real file written as code. Make it a link")
+
+# --- 9. the ~/.links namespace, when the workspace uses it --------------------
+# A workspace reached from code repos or cloned on several machines refers to itself through
+# ~/.links (BUILDING.md, Paths across machines). That indirection is only safe if a machine
+# missing a link says so, rather than an agent reading an empty folder and moving on. A
+# workspace that never writes a ~/.links path is not checked.
+FENCE = re.compile(r'```.*?```', re.S)
+TILDE = re.compile(r'`(~/\.links/[^`\s]+)`')
+used = {}
+for p in FILES:
+    if archived(p):
+        continue
+    for m in TILDE.findall(FENCE.sub("", p.read_text())):
+        if not any(ph in m for ph in ("<", "*", "...")):   # a placeholder, not a path
+            used.setdefault(m, set()).add(rel(p))
+if used:
+    ws = Path.home() / ".links" / "workspace"
+    if not ws.is_symlink():
+        warnings.append("~/.links/workspace does not exist on this machine, so ~/.links paths "
+                        "resolve to nothing. Create it (BUILDING.md, Paths across machines)")
+    elif not ws.exists():
+        warnings.append(f"~/.links/workspace is a broken link (-> {os.readlink(ws)})")
+    elif not ws.samefile(ROOT):
+        # samefile, not string equality: renames and case-insensitive filesystems make two
+        # spellings of one directory look different.
+        warnings.append(f"~/.links/workspace points at {os.path.realpath(ws)}, not this "
+                        f"workspace at {ROOT}")
+    for m, where in sorted(used.items()):
+        if not Path(m.replace("~", str(Path.home()), 1)).exists():
+            warnings.append(f"{', '.join(sorted(where))}: {m} does not resolve on this machine. "
+                            f"Add the link, or name the repo instead")
 
 # --- report --------------------------------------------------------------------
 quiet = "--quiet" in sys.argv

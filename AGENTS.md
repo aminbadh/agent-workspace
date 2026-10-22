@@ -1,83 +1,58 @@
 # Workspace Instructions
 
-The single instructions file for every AI agent that works in this folder, whatever the tool
-or model. Tools that look for their own file name point here (see [CLAUDE.md](CLAUDE.md)).
+The one instructions file for every AI agent that works in this folder, whatever the tool or model. Tools that look for their own file name point here (see [CLAUDE.md](CLAUDE.md)).
 
 ## What this workspace is
 
-A folder of plain Markdown files that holds the context, reasoning and decisions behind
-everything I am working on. It is organized by **domain folders**. Each domain has a
-`CONTEXT.md` saying what is true in it right now, and a `DECISIONS.md` logging what was
-settled and learned. The full spec is [CONVENTIONS.md](CONVENTIONS.md): read it before
-creating or restructuring a domain, rather than copying the shape of a neighbour.
+A folder of plain Markdown files holding the context, reasoning and decisions behind what the user is working on. It is organized by **domain folders**: each has a `CONTEXT.md` saying what is true in it right now and a `DECISIONS.md` logging what was settled and learned. The full spec is [CONVENTIONS.md](CONVENTIONS.md). Read it before creating or restructuring a domain, rather than copying the shape of a neighbour.
 
-Tasks and dates do not live here. They live in my task app; see [TASKS.md](TASKS.md).
+## First, every session
+
+1. **Read [PROFILE.md](PROFILE.md).** It says who the user is and what they are working on. Never ask for something it already answers.
+2. **If PROFILE.md still says "Blank template", run the onboard skill before anything else,** whatever the user asked. Tell them it takes about fifteen minutes and makes every later answer specific to them.
 
 ## Operating rules
 
-1. **Context first.** Before answering anything about a domain, read its `CONTEXT.md`. Do not
-   ask me for information that is already written down.
-2. **Check freshness before trusting a file.** Every `CONTEXT.md` carries `status` and
-   `last_reviewed` in its frontmatter:
-   - `status: dormant`: real, but not being worked. Never present its workstreams as live
-     commitments. Say it is dormant.
-   - `status: archived`: finished. It lives under `.archive/`. Do not read it unless I ask
-     about it directly.
-   - `last_reviewed` older than the file's review interval: say so rather than trusting it,
-     for example "last verified on 3 March, treat the dates with caution." The
-     [linter](scripts/workspace-lint.py) reports what is overdue, so do not keep a threshold
-     in your head.
-3. **One fact, one home.** A parent `CONTEXT.md` is an index of its children, not a summary.
-   Never copy a deadline, decision or number from one file into another. Link to where it
-   lives. If two files disagree, the more specific one wins and the other is a bug to fix.
-4. **Respect closed decisions.** If a `DECISIONS.md` marks something closed, do not reopen or
-   re-analyze it unless I explicitly ask.
-5. **Update what you invalidate.** If work in a session changes something a `CONTEXT.md`
-   asserts, edit that file in the same session and bump its `last_reviewed`. Settled a
-   decision? Append it to `DECISIONS.md`. Stale context is the main way this workspace fails.
-6. **Links, not paths.** Refer to other files with real Markdown links, never backticked
-   paths. A link can be checked; a backticked path stays wrong forever.
-7. **Arbitrate with the Compass.** Domain files say what is true inside a domain. They never
-   say which domain matters most. When that is the question, read [COMPASS.md](COMPASS.md).
+1. **Context first.** Before answering anything about a domain, read its `CONTEXT.md`. Do not ask for information that is already written down.
+2. **Check freshness before trusting a file.** Every `CONTEXT.md` carries `status` and `last_reviewed` in its frontmatter:
+   - `status: dormant`: real, but not being worked. Never present its workstreams as live commitments. Say it is dormant.
+   - `status: archived`: finished. It lives under `.archive/`. Do not read it unless the user asks about it directly.
+   - `last_reviewed` older than the file's review interval: say so rather than trusting it, for example "last verified on 3 March, treat the dates with caution." [The linter](scripts/workspace-lint.py) reports what is overdue, so do not keep a threshold in your head.
+3. **One fact, one home.** A parent `CONTEXT.md` is an index of its children, not a summary. Never copy a deadline, decision or number from one file into another. Link to where it lives. If two files disagree, the more specific one wins and the other is a bug to fix.
+4. **Respect closed decisions.** If a `DECISIONS.md` marks something closed, do not reopen or re-analyze it unless the user explicitly asks.
+5. **Update what you invalidate.** If work in a session changes something a `CONTEXT.md` asserts, edit that file in the same session and bump its `last_reviewed`. Settled a decision? Append it to `DECISIONS.md`. Stale context is the main way this workspace fails.
+6. **Never invent a fact** about the user, their work or the world. Ask, or say you do not know. A plausible default that a plan is then built on is an invented fact.
+7. **Search the web for questions about the outside world.** Whether a tool has an MCP server or connector, how to export from an app, the usual way to do something: search before answering or asking the user, and lead with the established solution rather than a homemade one.
+8. **Links, not paths.** Refer to other files with real Markdown links, never backticked paths. A link can be checked; a backticked path stays wrong forever.
 
-## The Compass
+## What to do now
 
-[COMPASS.md](COMPASS.md) is the only file with authority across domains: a few life areas,
-each with a goal ladder from someday down to this week.
+When the question is open (what should I do now, today or this week, I am stuck, I am behind), use the [one-thing skill](.agents/skills/one-thing/SKILL.md) rather than ranking from memory. When the conversation is already on a topic, "what now" means within that topic. Do not volunteer commentary on the user's priorities when they have not asked.
 
-**Read it when** the question is what to do now, today or this week; when I say I am stuck,
-behind or overwhelmed; when a plan trades one domain off against another; and when something
-new is being considered. A new commitment is a priority decision in disguise, drawn from the
-same fixed hours as everything else.
+The weekly pass that keeps these files true is the [weekly-review skill](.agents/skills/weekly-review/SKILL.md). Run it when the user says it is review time or asks to plan the week, never unprompted.
 
-**Do not read it** for routine work inside one domain, and do not volunteer commentary on my
-priorities when I have not asked.
+## Tasks
 
-**Picking one thing to do now.** Read the board, check each candidate's domain for what
-actually moved, and name one. Weigh closing deadlines first, then whether the next step is in
-my hands, then what is in season. If the top candidate is blocked on a person, the action is
-the unblock. If it is blocked by a date, say that area sits out rather than inventing a
-substitute.
+*Not set up yet: the onboard skill writes where tasks live and how to reach them.*
 
-## The weekly review
+The boundary between tasks and these files is in [CONVENTIONS.md](CONVENTIONS.md#the-task-home).
 
-[procedures/weekly-review.md](procedures/weekly-review.md) is the recurring pass that keeps
-these files true. Follow it when I say it is review time. Do not run it unprompted, and do
-not run half of it during ordinary work.
+## Skills
+
+Procedures the user asks for by name live as skills in `.agents/skills/`, linked into `.claude/skills/` for Claude Code. Use them rather than improvising. Rules that must always hold stay in this file, because a skill only runs when invoked.
+
+| Skill | Use it when |
+|---|---|
+| [onboard](.agents/skills/onboard/SKILL.md) | PROFILE.md is blank, the user wants to update their setup, or they want an add-on from [addons/](addons/README.md) |
+| [weekly-review](.agents/skills/weekly-review/SKILL.md) | It is review time, or the user asks to plan the week |
+| [one-thing](.agents/skills/one-thing/SKILL.md) | The user asks what to do now with no topic in play |
 
 ## Working with me
 
-*Replace these with your own. They are examples of the kind of preference worth writing down
-once instead of repeating in every session.*
-
-- **Ask before assuming.** When context is missing, read the file or ask. Never fill a gap
-  with a plausible default and build a plan on it.
-- **Targets sit before deadlines.** "By X" is the outer bound. Plan the work with slack.
-- **On a decision, give a recommendation**, not an exhaustive survey of options.
+*Not set up yet: the onboard skill writes how the user wants the AI to work and write for them.*
 
 ## Output
 
 - Clean Markdown: headers, bold for key terms, tables for comparisons.
 - When updating a document, make the edit directly. Do not describe what you would change.
-- **Nothing is committed automatically.** Leave changes in the working tree for me to review
-  unless I ask for a commit.
+- **Nothing is committed automatically.** Leave changes in the working tree for the user to review unless they ask for a commit.

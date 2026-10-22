@@ -1,64 +1,62 @@
 # Workspace Starter
 
-A folder structure and a small set of rules that keep an AI assistant useful instead of
-confidently wrong, when you run your work or life from plain Markdown files.
+**Tell your AI once.** A folder of plain Markdown files your AI assistant works in, so it knows who you are, what you are working on and what you already decided, and stops asking you to explain yourself every session. It stays useful instead of confidently wrong, because every file says how old it is and every fact lives in one place.
 
-Works with any tool that reads files: Claude Code, Codex, Cursor, OpenCode, or whatever comes
-next. The instructions live in [AGENTS.md](AGENTS.md), the shared format most agents read.
+You do not set it up by hand. Open it in your AI tool and say hello: it interviews you for about fifteen minutes, creates your first areas of work from your answers, connects to where your notes and tasks already live, offers a weekly rhythm that fits how you plan, and finishes by doing one real task for you with what it just learned.
 
-## The problem
+## How to start
 
-Every note you write sounds current forever. An assistant cannot tell a note from April from one
-written this morning, and when the same fact lives in two files, one copy goes stale while both
-still look right. The assistant then plans against the stale one, confidently.
+1. **Get your own copy.** Press "Use this template" on GitHub (keep the new repository private: it will hold your life), then clone it. Or download the zip.
+2. **Open the folder in your AI tool.** Claude Code, Codex and OpenCode all work; so does any tool that reads AGENTS.md.
+3. **Say hello.** Onboarding starts by itself and asks what you are here for.
 
-## The idea
+You need [uv](https://docs.astral.sh/uv/) for the linter and the add-on scripts (or Python 3.11 or newer for the linter alone). Nothing else to install.
 
-- **Domains.** One folder per area of your work or life, each with a `CONTEXT.md` that says what
-  is true in it right now.
-- **Every file declares its age.** A status (active, dormant, archived) and the date it was last
-  verified. Old means suspect, and the assistant says so.
-- **One fact, one home.** Everything else links to it. Parent folders are indexes, not summaries.
-- **Decisions are logged, not remembered.** Each domain keeps an append-only `DECISIONS.md`, so
-  settled questions stay settled.
-- **A linter catches the rot.** Stale files, broken links, dates copied where they do not belong.
-- **A Compass for priorities.** One file ranks the areas of your life against each other, so
-  "what should I do now?" has an answer.
-- **Tasks stay in your task app.** These files hold reasoning; your app holds dates.
+## What it does for you
 
-## What is in here
+- **Your context, written down once.** Each area of your work or life is a folder with a `CONTEXT.md` (what is true now) and a `DECISIONS.md` (what was settled, so it stays settled).
+- **Honest about its age.** Every file says when it was last verified, and the AI tells you when something is too old to trust instead of planning on it.
+- **One fact, one home.** Everything else links to it, so there is no second copy to go stale.
+- **Tasks stay in your task app.** If it can connect, the AI uses it; if not, a TASKS.md file. These files hold the reasoning, the task home holds the dates.
+- **A weekly review** that keeps it all true, with the planning rhythm you choose: GTD, Agile Results, 12 Week Year, multi-scale planning, a Bullet Journal, or the Compass.
+- **"What should I do now?"** has an answer, worked out from your plan and what actually moved.
+
+## Core and add-ons
+
+The core is small on purpose:
 
 | File | What it is |
 |---|---|
-| [AGENTS.md](AGENTS.md) | The rules every agent follows. Edit the "Working with me" section |
-| [CLAUDE.md](CLAUDE.md) | One line pointing Claude Code at AGENTS.md |
-| [CONVENTIONS.md](CONVENTIONS.md) | The full spec: frontmatter, freshness, folders, links, dates |
-| [COMPASS.md](COMPASS.md) | Your areas of life, each with a goal ladder. Blank, for you to fill |
-| [TASKS.md](TASKS.md) | Where the line sits between these files and your task app |
-| [procedures/weekly-review.md](procedures/weekly-review.md) | The 30-minute weekly pass that keeps it all true |
-| [work/](work/CONTEXT.md) | An invented example domain. Read it, copy its shape, delete it |
-| [scripts/workspace-lint.py](scripts/workspace-lint.py) | The linter. No dependencies |
+| [AGENTS.md](AGENTS.md) | The rules every agent follows. Onboarding adds how you want it to work and write for you |
+| [CONVENTIONS.md](CONVENTIONS.md) | The full spec: frontmatter, freshness, folders, links, dates, the task home, skills |
+| [PROFILE.md](PROFILE.md) | Who you are. Blank until onboarding fills it |
+| [scripts/workspace-lint.py](scripts/workspace-lint.py) | The linter: stale files, broken links, dates where they do not belong. No dependencies |
+| [onboard](.agents/skills/onboard/SKILL.md) | The first-session interview, later updates, and adding an add-on |
+| [weekly-review](.agents/skills/weekly-review/SKILL.md) | Upkeep, then your own planning rhythm |
+| [one-thing](.agents/skills/one-thing/SKILL.md) | Picks the single thing to do now |
 
-## Getting started
+[Add-ons](addons/README.md) wait in `addons/` until onboarding moves in the ones you pick, so an unused one never clutters your workspace:
 
-1. **Copy this repository.** Press "Use this template" on GitHub, or download the zip.
-2. **Open the folder in your AI tool** and ask it: *"Read AGENTS.md and CONVENTIONS.md, then
-   help me set up my first domain."* Start with one area you are actively working on.
-3. **Run the linter:** `uv run scripts/workspace-lint.py` (or `python3 scripts/workspace-lint.py`
-   with Python 3.11+). Within two weeks it will flag the example domain as stale. That is the
-   point: delete it once your own domains exist.
+- **Applications:** for applying to internships, jobs, Master's programmes, scholarships and more. A CV engine (plain content file to PDF, tailored copies, letters, interview stories) and opportunity research (find, screen, track, and verify every link and deadline).
+- **Building:** for writing code with AI agents. One session plans and keeps the docs true; short-lived builders work in each repo from a written brief.
 
-Then fill in the Compass when you next plan a week, and run the weekly review when you do.
+## Tools
 
-### Tool notes
+- **Claude Code** reads [CLAUDE.md](CLAUDE.md), which imports AGENTS.md, and finds skills through the links in `.claude/skills/`.
+- **Codex** and **OpenCode** read AGENTS.md and `.agents/skills/` directly.
+- **Any other tool** that looks for its own file name: add that file with the same one-line import as CLAUDE.md, or point the tool's settings at AGENTS.md.
 
-- **Claude Code** reads [CLAUDE.md](CLAUDE.md), which imports AGENTS.md.
-- **Codex**, **Cursor** and **OpenCode** read AGENTS.md directly.
-- **Any other tool** that looks for its own file name: add that file with the same one-line
-  import as CLAUDE.md, or point the tool's settings at AGENTS.md.
+A browser your AI can drive helps (to read sites that block scripts, for example), and onboarding checks whether you have one rather than assuming.
 
 ## Where this came from
 
-This is the skeleton of the workspace I have run my own work and studies from since March 2026,
-refined through daily use with AI agents. The full story, and how each rule earned its place, is at
-[aminbadh.me/workspace](https://aminbadh.me/workspace).
+The workspace its maintainer has run their own work and studies from since March 2026, refined through daily use with AI agents and stripped back to the core. The story, and how each rule earned its place, is at [aminbadh.me/workspace](https://aminbadh.me/workspace).
+
+## For the maintainer
+
+The applications add-on's skills are developed in the maintainer's own workspace; this repository carries released copies. To refresh them, run the sync script, review the diff and commit. Never edit them here.
+
+```bash
+./scripts/sync-skills.sh                          # from ~/.links/workspace/.agents/skills
+WORKSPACE_SKILLS=<dir> ./scripts/sync-skills.sh   # from anywhere else
+```
