@@ -54,7 +54,7 @@ The workspace its maintainer has run their own work and studies from since March
 
 ## For the maintainer
 
-This repository is a release of the maintainer's own workspace. The generic files (the three core skills, the applications add-on's skills, the linter, CONVENTIONS.md, the building add-on's BUILDING.md and [the add-ons index](.agents/addons/README.md)) are edited only there and copied here word for word by the release script, minus review dates. Never edit them here. The starter owns only PROFILE.md and AGENTS.md (blank templates), this README, LICENSE, .gitignore, CLAUDE.md and the add-on READMEs other than the index. To release, run the script, review the diff and commit.
+This repository is a release of the maintainer's own workspace. The generic files (the three core skills, the applications add-on's skills, the linter, CONVENTIONS.md, the building add-on's BUILDING.md and [the add-ons index](.agents/addons/README.md)) are edited only there and copied here word for word by the release script, minus review dates. Never edit them here. The starter owns only PROFILE.md and AGENTS.md (blank templates), this README, LICENSE, .gitignore, CLAUDE.md, the release script and the add-on READMEs other than the index. To release, run the script, review the diff and commit.
 
 ```bash
 ./.agents/scripts/release.sh                   # from ~/.links/workspace

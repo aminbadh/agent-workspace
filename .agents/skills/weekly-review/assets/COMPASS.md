@@ -8,7 +8,7 @@ last_reviewed: <today, YYYY-MM-DD>
 
 # The Compass
 
-**The arbitration layer.** Every other file here describes what is true inside one domain. This one ranks the areas of the user's life against each other, the one question none of them can answer. It sits beside [AGENTS.md](AGENTS.md) and [CONVENTIONS.md](CONVENTIONS.md), not inside a domain, because it has authority over all of them.
+**The arbitration layer.** Every other file here describes what is true inside one domain. This one ranks the areas of the user's life against each other, the one question none of them can answer. It sits at the root beside [AGENTS.md](AGENTS.md), not inside a domain, because it has authority over all of them.
 
 ## How it works
 
