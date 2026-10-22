@@ -5,7 +5,7 @@ description: "Create, update, tailor, translate and restyle a CV or résumé, bu
 
 # CV Engine
 
-A CV here is two files: **content** (a YAML file of facts, one per version) and **look** (`template.typ`, shared by every version). The script `scripts/cv.py`, in this skill's folder, builds content into a PDF and reports whether it fits its page limit. Run it with `uv run`; it fetches its own pinned Typst, so nothing else needs installing.
+A CV here is two files: **content** (a YAML file of facts, one per version) and **look** (`template.typ`, shared by every version). The script `scripts/cv.py`, in this skill's folder, builds content into a PDF and reports whether it fits its page limit. Run it with `uv run`; it fetches its own pinned Typst, so nothing else needs installing. **Where `uv` is missing** (claude.ai's code sandbox, for one), install the two packages and run the script with Python instead: `pip install 'typst==0.15.*' pyyaml`, then `python <skill>/scripts/cv.py …` with the same arguments.
 
 ```
 cv/

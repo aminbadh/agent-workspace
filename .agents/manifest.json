@@ -2,7 +2,7 @@
   "files": {
     ".agents/CONVENTIONS.md": "14646b25212b1729867b35d3838021f68b9d3c8e41496bbc1657f429a60df908",
     ".agents/addons/README.md": "09757e77beef3fae297cdef14affaa0ef0a96b0e19b7fa04fe21627c378a33d5",
-    ".agents/addons/applications/skills/cv-engine/SKILL.md": "ef207621ac44dfea35fb3250d2b2bbac437ce927c7d8e5805bfa96ed43fc42e6",
+    ".agents/addons/applications/skills/cv-engine/SKILL.md": "b060dcd28a5b905f01b1d9b7993448962308326138259d54a0408ca154c4a8a9",
     ".agents/addons/applications/skills/cv-engine/assets/example.en.yaml": "ab4a04fa11f6fc3b99aea50c79d6a2fd304a8c646b55fe6e40957e99d15f601f",
     ".agents/addons/applications/skills/cv-engine/assets/template.typ": "fc5c42fb7798f172968d2b4d37238c6269e6c7165157ec7f2c78c08e899df921",
     ".agents/addons/applications/skills/cv-engine/reference/content-format.md": "902016b361b3bfce37df09941c1a315bc467c7dce779fa47af3c2648f2afc95e",
